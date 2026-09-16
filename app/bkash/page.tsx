@@ -49,7 +49,7 @@ export default function BkashGenerator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
             <label className="text-sm font-semibold text-gray-600">Receiver Name/Top Text</label>
-            <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} className="border p-2 rounded outline-none focus:ring-2" style={{ focusRing: bkashPink }} />
+            <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} className="border p-2 rounded outline-none focus:ring-2 focus:ring-[#e2136e]" />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-semibold text-gray-600">Receiver Number</label>
