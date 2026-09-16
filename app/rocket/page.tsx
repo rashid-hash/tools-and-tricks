@@ -42,7 +42,7 @@ export default function RocketGenerator() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
             <label className="text-sm font-semibold text-gray-600">Receiver Number</label>
-            <input type="text" value={receiverNumber} onChange={(e) => setReceiverNumber(e.target.value)} className="border p-2 rounded outline-none focus:ring-2" style={{ focusRing: themeColor }} />
+            <input type="text" value={receiverNumber} onChange={(e) => setReceiverNumber(e.target.value)} className="border p-2 rounded outline-none focus:ring-2 focus:ring-[#88198f]" />
           </div>
           <div className="flex flex-col gap-1">
             <label className="text-sm font-semibold text-gray-600">Amount (Tk)</label>
