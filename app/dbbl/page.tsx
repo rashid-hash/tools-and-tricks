@@ -113,8 +113,8 @@ export default function DbblOriginalGenerator() {
           <div className="absolute inset-0 z-10 w-full h-full pointer-events-none">
             
             {/* 1. Beneficiary Information Block */}
-            {/* left-[11%] & right-[11%] matches the exact left/right padding of the blank box */}
-            <div className="absolute top-[31%] left-[11%] right-[11%] flex flex-col gap-[12.5px]">
+            {/* left-[12%] & right-[12.5%] matches the exact left/right padding of the blank box */}
+            <div className="absolute top-[31%] left-[12%] right-[12.5%] flex flex-col gap-[12.5px]">
               <div className="flex justify-between items-start">
                 <span className="text-[14px] text-gray-600 tracking-tight">Beneficiary Name</span>
                 <span className="text-[14px] text-gray-800 font-medium uppercase text-right tracking-tight">{beneficiaryName}</span>
@@ -131,7 +131,7 @@ export default function DbblOriginalGenerator() {
 
             {/* 2. Payment Information Block */}
             {/* Reduced gap to gap-[10px] to fit 5 items perfectly */}
-            <div className="absolute top-[52%] left-[11%] right-[11%] flex flex-col gap-[9px]">
+            <div className="absolute top-[52%] left-[12%] right-[12.5%] flex flex-col gap-[9px]">
               <div className="flex justify-between items-center">
                 <span className="text-[14px] text-gray-600 tracking-tight">NexusPay ID</span>
                 <span className="text-[14px] text-gray-800 font-medium tracking-tight">{nexusPayId}</span>
