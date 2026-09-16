@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench } from "lucide-react";
+import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
