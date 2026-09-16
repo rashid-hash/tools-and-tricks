@@ -104,7 +104,7 @@ export default function DbblOriginalGenerator() {
           {/* Background Image */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src="/dbbl-bg.jpg" 
+            src="/dbbl-bg.jpeg" 
             alt="DBBL Blank Template" 
             className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" 
           />
