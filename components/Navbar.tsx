@@ -3,96 +3,100 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard } from "lucide-react";
+import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  // মেনু আইটেমের লিস্ট
-  const navLinks = [
-    { name: "Home", path: "/", icon: <Home size={18} /> },
-    { name: "WhatsApp", path: "/whatsapp", icon: <MessageCircle size={18} /> },
-    { name: "bKash", path: "/bkash", icon: <Smartphone size={18} /> },
-    { name: "Nagad", path: "/nagad", icon: <Wallet size={18} /> },
-    { name: "Rocket", path: "/rocket", icon: <CreditCard size={18} /> },
-    // রকেট পেজ বানালে এটি আনকমেন্ট করে দেবেন
-    // { name: "Rocket", path: "/rocket", icon: <CreditCard size={18} /> }, 
+  // টুলের লিস্ট
+  const toolsLinks = [
+    { name: "WhatsApp Mockup", path: "/whatsapp", icon: <MessageCircle size={16} /> },
+    { name: "bKash Receipt", path: "/bkash", icon: <Smartphone size={16} /> },
+    { name: "Nagad Receipt", path: "/nagad", icon: <Wallet size={16} /> },
+    { name: "Rocket Receipt", path: "/rocket", icon: <CreditCard size={16} /> },
   ];
 
   return (
     <>
-      {/* গ্লোবাল নেভিগেশন বার */}
       <nav className="bg-white shadow-sm border-b border-gray-100 fixed top-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             
-            {/* লোগো অংশ */}
+            {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="text-2xl font-black text-gray-800 tracking-tight flex gap-1 items-center">
                 Mockup<span className="text-blue-600">Hub</span>
               </Link>
             </div>
 
-            {/* ডেস্কটপ মেনু */}
-            <div className="hidden md:flex items-center space-x-2">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.path;
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.path}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
-                    }`}
-                  >
-                    {link.icon} {link.name}
-                  </Link>
-                );
-              })}
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-4">
+              <Link href="/" className={`font-semibold px-3 py-2 rounded-lg transition-colors ${pathname === "/" ? "text-blue-600 bg-blue-50" : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"}`}>
+                Home
+              </Link>
+
+              {/* Tools Dropdown (Hover) */}
+              <div className="relative group">
+                <button className="flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  <Wrench size={18} /> Tools <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-200" />
+                </button>
+                
+                {/* Dropdown Menu */}
+                <div className="absolute left-0 mt-1 w-56 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left">
+                  <div className="p-2 flex flex-col gap-1">
+                    {toolsLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        href={link.path}
+                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                          pathname === link.path ? "bg-blue-50 text-blue-600" : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                        }`}
+                      >
+                        {link.icon} {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* মোবাইল মেনু বাটন */}
+            {/* Mobile Menu Button */}
             <div className="flex items-center md:hidden">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-600 hover:text-blue-600 focus:outline-none"
-              >
+              <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 hover:text-blue-600">
                 {isOpen ? <X size={28} /> : <Menu size={28} />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* মোবাইল মেনু ড্রপডাউন */}
+        {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full">
-            <div className="px-4 pt-2 pb-4 space-y-1">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.path;
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.path}
-                    onClick={() => setIsOpen(false)} // ক্লিক করলে মেনু বন্ধ হবে
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold transition-all ${
-                      isActive
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-blue-600"
-                    }`}
-                  >
-                    {link.icon} {link.name}
-                  </Link>
-                );
-              })}
+            <div className="px-4 py-4 flex flex-col gap-2">
+              <Link href="/" onClick={() => setIsOpen(false)} className={`font-semibold px-4 py-3 rounded-lg ${pathname === "/" ? "bg-blue-50 text-blue-600" : "text-gray-600"}`}>
+                Home
+              </Link>
+              
+              <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Our Tools</div>
+              
+              {toolsLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium ${
+                    pathname === link.path ? "bg-blue-50 text-blue-600" : "text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  <span className={`${pathname === link.path ? "text-blue-600" : "text-gray-400"}`}>{link.icon}</span> 
+                  {link.name}
+                </Link>
+              ))}
             </div>
           </div>
         )}
       </nav>
-      
-      {/* Navbar ফিক্সড থাকায় কন্টেন্ট যেন নিচে না ঢেকে যায়, তাই এই স্পেসার */}
       <div className="h-16"></div>
     </>
   );

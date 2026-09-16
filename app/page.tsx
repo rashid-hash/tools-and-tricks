@@ -1,90 +1,79 @@
 "use client";
 
 import Link from "next/link";
-import { MessageCircle, Smartphone, Wallet, CreditCard, ArrowRight } from "lucide-react";
+import { Sparkles, Zap, ShieldCheck, ArrowRight } from "lucide-react";
 
 export default function HomePage() {
-  // টুলের লিস্ট (ভবিষ্যতে আরও টুল আসলে এখানে অ্যাড করা যাবে)
-  const tools = [
-    {
-      id: "whatsapp",
-      name: "WhatsApp Mockup",
-      description: "Create realistic WhatsApp chat screenshots with custom messages.",
-      icon: <MessageCircle size={32} className="text-white" />,
-      color: "bg-green-500",
-      link: "/whatsapp",
-    },
-    {
-      id: "bkash",
-      name: "bKash Screenshot",
-      description: "Generate bKash send money or payment mockup receipts easily.",
-      icon: <Smartphone size={32} className="text-white" />,
-      color: "bg-pink-600",
-      link: "/bkash", // এই পেজগুলো আমরা পরে বানাবো
-    },
-    {
-      id: "nagad",
-      name: "Nagad Screenshot",
-      description: "Create fake Nagad transaction UI for design and testing.",
-      icon: <Wallet size={32} className="text-white" />,
-      color: "bg-orange-500",
-      link: "/nagad",
-    },
-    {
-      id: "rocket",
-      name: "Rocket Screenshot",
-      description: "Generate Dutch-Bangla Rocket transaction mockups instantly.",
-      icon: <CreditCard size={32} className="text-white" />,
-      color: "bg-purple-600",
-      link: "/rocket",
-    },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-
+    <div className="min-h-screen bg-white font-sans flex flex-col">
+      
       {/* --- Hero Section --- */}
-      <header className="text-center py-16 px-4">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-          Free Mockup Generators
+      <main className="flex-1 flex flex-col items-center justify-center px-4 text-center mt-12 md:mt-24 mb-16">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-600 font-semibold text-sm mb-8 border border-blue-100">
+          <Sparkles size={16} /> V1.0 is now live
+        </div>
+        
+        <h1 className="text-5xl md:text-7xl font-extrabold text-gray-900 tracking-tight max-w-4xl leading-tight mb-6">
+          Create Pixel-Perfect <br className="hidden md:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+            UI Mockups Instantly
+          </span>
         </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Create highly realistic UI screenshots for chat apps, mobile banking, and more. Select a tool below to get started!
+        
+        <p className="text-lg md:text-xl text-gray-500 max-w-2xl mb-10">
+          The ultimate screenshot generator tool for creators, developers, and pranksters. Generate highly realistic chat and payment receipts in seconds.
         </p>
-      </header>
 
-      {/* --- Tools Grid --- */}
-      <main className="max-w-6xl mx-auto px-4 pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tools.map((tool) => (
-            <Link href={tool.link} key={tool.id}>
-              <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all border border-gray-100 group cursor-pointer h-full flex flex-col">
-                
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-md ${tool.color}`}>
-                  {tool.icon}
-                </div>
-                
-                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                  {tool.name}
-                </h3>
-                
-                <p className="text-gray-500 text-sm mb-6 flex-1">
-                  {tool.description}
-                </p>
-                
-                <div className="flex items-center text-blue-600 font-semibold text-sm gap-2">
-                  Use Tool <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </Link>
-          ))}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link href="/whatsapp" className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-200">
+            Try WhatsApp Tool <ArrowRight size={20} />
+          </Link>
+          <Link href="/bkash" className="bg-gray-100 text-gray-800 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-200 transition-all flex items-center justify-center">
+            Explore All Tools
+          </Link>
         </div>
       </main>
 
+      {/* --- Features Section --- */}
+      <section className="bg-gray-50 py-20 px-4 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Why Choose MockupHub?</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                <Zap size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Lightning Fast</h3>
+              <p className="text-gray-500">Generate high-quality mockups in real-time. No waiting, no loading screens. Just type and download.</p>
+            </div>
+            
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+              <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6">
+                <Sparkles size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Pixel Perfect</h3>
+              <p className="text-gray-500">Our templates are crafted to match exact UI specifications, ensuring 100% realistic screenshots.</p>
+            </div>
+            
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mb-6">
+                <ShieldCheck size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Safe & Secure</h3>
+              <p className="text-gray-500">Everything runs completely in your browser. We don't store your inputted data or generated images.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- Footer --- */}
-      <footer className="text-center py-8 text-gray-400 text-sm">
-        <p>© 2026 MockupHub. Generated for testing and entertainment purposes only.</p>
+      <footer className="border-t border-gray-100 py-8 text-center bg-white">
+        <p className="text-gray-400 font-medium text-sm">
+          © 2026 MockupHub. Built for creators.
+        </p>
       </footer>
+
     </div>
   );
 }
