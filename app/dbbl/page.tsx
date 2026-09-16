@@ -114,7 +114,7 @@ export default function DbblOriginalGenerator() {
             
             {/* 1. Beneficiary Information Block */}
             {/* left-[11%] & right-[11%] matches the exact left/right padding of the blank box */}
-            <div className="absolute top-[32%] left-[11%] right-[11%] flex flex-col gap-[18px]">
+            <div className="absolute top-[31%] left-[11%] right-[11%] flex flex-col gap-[12.5px]">
               <div className="flex justify-between items-start">
                 <span className="text-[14px] text-gray-600 tracking-tight">Beneficiary Name</span>
                 <span className="text-[14px] text-gray-800 font-medium uppercase text-right tracking-tight">{beneficiaryName}</span>
@@ -130,8 +130,8 @@ export default function DbblOriginalGenerator() {
             </div>
 
             {/* 2. Payment Information Block */}
-            {/* Reduced gap to gap-[14px] to fit 5 items perfectly */}
-            <div className="absolute top-[54%] left-[11%] right-[11%] flex flex-col gap-[14px]">
+            {/* Reduced gap to gap-[10px] to fit 5 items perfectly */}
+            <div className="absolute top-[52%] left-[11%] right-[11%] flex flex-col gap-[9px]">
               <div className="flex justify-between items-center">
                 <span className="text-[14px] text-gray-600 tracking-tight">NexusPay ID</span>
                 <span className="text-[14px] text-gray-800 font-medium tracking-tight">{nexusPayId}</span>
@@ -155,9 +155,9 @@ export default function DbblOriginalGenerator() {
             </div>
 
             {/* 3. Total Payment Green Bar Text */}
-            <div className="absolute top-[77.4%] left-[12.5%] right-[12.5%] flex justify-between items-center h-[50px]">
-              <span className="text-white text-[15px] font-medium tracking-wide">Total Payment</span>
-              <span className="text-white text-[15px] font-medium">BDT {amount}</span>
+            <div className="absolute top-[72.5%] left-[14.5%] right-[14.5%] flex justify-between items-center h-[50px]">
+              <span className="text-white text-[14.5px] font-simple tracking-wide">Total Payment</span>
+              <span className="text-white text-[14.5px] font-simple">BDT {amount}</span>
             </div>
 
           </div>
