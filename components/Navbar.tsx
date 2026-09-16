@@ -15,6 +15,8 @@ export default function Navbar() {
     { name: "bKash Receipt", path: "/bkash", icon: <Smartphone size={16} /> },
     { name: "Nagad Receipt", path: "/nagad", icon: <Wallet size={16} /> },
     { name: "Rocket Receipt", path: "/rocket", icon: <CreditCard size={16} /> },
+    { name: "DBBL Transfer", path: "/dbbl", icon: <Building2 size={16} /> },
+    { name: "IBBL Receipt", path: "/ibbl", icon: <Landmark size={16} /> },
   ];
 
   return (
