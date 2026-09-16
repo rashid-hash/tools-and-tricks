@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark } from "lucide-react";
+import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark, Crop, Calculator } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -11,6 +11,8 @@ export default function Navbar() {
 
   // টুলের লিস্ট
   const toolsLinks = [
+    { name: "Photo & Sign Resizer", path: "/image-resizer", icon: <Crop size={16} /> },
+    { name: "Age Calculator", path: "/age-calculator", icon: <Calculator size={16} /> },
     { name: "WhatsApp Mockup", path: "/whatsapp", icon: <MessageCircle size={16} /> },
     { name: "bKash Receipt", path: "/bkash", icon: <Smartphone size={16} /> },
     { name: "Nagad Receipt", path: "/nagad", icon: <Wallet size={16} /> },
