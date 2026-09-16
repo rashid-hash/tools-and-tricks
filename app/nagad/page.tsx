@@ -11,8 +11,8 @@ const notoSansBengali = Noto_Sans_Bengali({
 });
 
 export default function NagadGenerator() {
-  const [receiverNumber, setReceiverNumber] = useState("01323-513168");
-  const [trxId, setTrxId] = useState("75XQFR1K");
+  const [receiverNumber, setReceiverNumber] = useState("01300-000000");
+  const [trxId, setTrxId] = useState("75XQFJJJ");
   const [amount, setAmount] = useState("91.35");
   const [charge, setCharge] = useState("5");
   const [time, setTime] = useState("04 সেপ. 2026, 10:56 PM");

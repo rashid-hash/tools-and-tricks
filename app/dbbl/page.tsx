@@ -11,17 +11,17 @@ const roboto = Roboto({
 });
 
 export default function DbblOriginalGenerator() {
-  const [beneficiaryName, setBeneficiaryName] = useState("MD.KABIRUL ISLAM");
+  const [beneficiaryName, setBeneficiaryName] = useState("NAME");
   const [beneficiaryBank, setBeneficiaryBank] = useState("Dutch-Bangla Bank\nPLC.");
-  const [receiverAccount, setReceiverAccount] = useState("7017010588587");
+  const [receiverAccount, setReceiverAccount] = useState("7017010000000");
   
-  const [nexusPayId, setNexusPayId] = useState("01774698008");
-  const [trxId, setTrxId] = useState("LID01713407090");
-  const [date, setDate] = useState("07-Feb-2026");
+  const [nexusPayId, setNexusPayId] = useState("01700000000");
+  const [trxId, setTrxId] = useState("LID01713400000");
+  const [date, setDate] = useState("01-Feb-2026");
   const [accountType, setAccountType] = useState("Nexus Debit Card");
-  const [senderAccount, setSenderAccount] = useState("**** **** **** 8696");
+  const [senderAccount, setSenderAccount] = useState("**** **** **** 8600");
   
-  const [amount, setAmount] = useState("46,000.00");
+  const [amount, setAmount] = useState("20,000.00");
 
   const previewRef = useRef<HTMLDivElement>(null);
   const dbblRed = "#e51c24";

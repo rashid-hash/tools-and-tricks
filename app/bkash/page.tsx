@@ -11,10 +11,10 @@ const notoSansBengali = Noto_Sans_Bengali({
 });
 
 export default function BkashGenerator() {
-  const [receiverName, setReceiverName] = useState("01861815301");
-  const [receiverNumber, setReceiverNumber] = useState("01861815301");
+  const [receiverName, setReceiverName] = useState("Name");
+  const [receiverNumber, setReceiverNumber] = useState("01800000000");
   const [time, setTime] = useState("12:17pm 24/06/26");
-  const [trxId, setTrxId] = useState("DFO3N0RZ85");
+  const [trxId, setTrxId] = useState("DFO000RZ85");
   const [amount, setAmount] = useState("485.00");
   const [charge, setCharge] = useState("5.00");
   const [newBalance, setNewBalance] = useState("12.44");
