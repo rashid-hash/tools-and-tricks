@@ -6,7 +6,7 @@ import { Noto_Sans_Bengali } from "next/font/google";
 import { 
   Globe, Users, Lock, MoreHorizontal, X, 
   ThumbsUp, MessageSquare, Share2, BadgeCheck, 
-  UploadCloud, Download, Facebook
+  UploadCloud, Download 
 } from "lucide-react";
 
 const notoSansBengali = Noto_Sans_Bengali({
