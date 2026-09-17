@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark, Crop, Calculator, FileText, Coins, ThumbsUp, Plane } from "lucide-react";
+import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark, Crop, Calculator, FileText, Coins, ThumbsUp, Plane, Type } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -11,6 +11,7 @@ export default function Navbar() {
 
   // টুলের লিস্ট
   const toolsLinks = [
+    { name: "Unicode to Bijoy", path: "/unicode-to-bijoy", icon: <Type size={16} /> },
     { name: "Messenger Chat", path: "/messenger", icon: <MessageCircle size={16} /> },
     { name: "Flight Ticket", path: "/boarding-pass", icon: <Plane size={16} /> },
     { name: "FB Post Mockup", path: "/facebook-post", icon: <ThumbsUp size={16} /> },
