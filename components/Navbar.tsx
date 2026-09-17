@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark, Crop, Calculator, FileText } from "lucide-react";
+import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark, Crop, Calculator, FileText, Coins, Facebook } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -11,7 +11,9 @@ export default function Navbar() {
 
   // টুলের লিস্ট
   const toolsLinks = [
+    { name: "FB Post Mockup", path: "/facebook-post", icon: <Facebook size={16} /> },
     { name: "Invoice Generator", path: "/invoice-generator", icon: <FileText size={16} /> },
+    { name: "EMI Calculator", path: "/emi-calculator", icon: <Coins size={16} /> },
     { name: "Photo & Sign Resizer", path: "/image-resizer", icon: <Crop size={16} /> },
     { name: "Age Calculator", path: "/age-calculator", icon: <Calculator size={16} /> },
     { name: "WhatsApp Mockup", path: "/whatsapp", icon: <MessageCircle size={16} /> },
