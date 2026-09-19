@@ -1,114 +1,69 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Home, MessageCircle, Smartphone, Wallet, Menu, X, CreditCard, ChevronDown, Wrench, Building2, Landmark, Crop, Calculator, FileText, Coins, ThumbsUp, Plane, Type, AlignLeft } from "lucide-react";
+import { Search, Menu, X, Layers } from "lucide-react";
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // টুলের লিস্ট
-  const toolsLinks = [
-    { name: "Unicode to Bijoy", path: "/unicode-to-bijoy", icon: <Type size={16} /> },
-    { name: "Bangla Lorem Ipsum", path: "/bangla-lorem", icon: <AlignLeft size={16} /> },
-    { name: "Messenger Chat", path: "/messenger", icon: <MessageCircle size={16} /> },
-    { name: "Flight Ticket", path: "/boarding-pass", icon: <Plane size={16} /> },
-    { name: "FB Post Mockup", path: "/facebook-post", icon: <ThumbsUp size={16} /> },
-    { name: "Invoice Generator", path: "/invoice-generator", icon: <FileText size={16} /> },
-    { name: "EMI Calculator", path: "/emi-calculator", icon: <Coins size={16} /> },
-    { name: "Photo & Sign Resizer", path: "/image-resizer", icon: <Crop size={16} /> },
-    { name: "Age Calculator", path: "/age-calculator", icon: <Calculator size={16} /> },
-    { name: "WhatsApp Mockup", path: "/whatsapp", icon: <MessageCircle size={16} /> },
-    { name: "bKash Receipt", path: "/bkash", icon: <Smartphone size={16} /> },
-    { name: "Nagad Receipt", path: "/nagad", icon: <Wallet size={16} /> },
-    { name: "Rocket Receipt", path: "/rocket", icon: <CreditCard size={16} /> },
-    { name: "DBBL Transfer", path: "/dbbl", icon: <Building2 size={16} /> },
-    { name: "IBBL Receipt", path: "/ibbl", icon: <Landmark size={16} /> },
-  ];
+  // Scroll Event for shrinking and adding shadow
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <>
-      <nav className="bg-white shadow-sm border-b border-gray-100 fixed top-0 w-full z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            
-            {/* Logo */}
-            <div className="flex items-center">
-              <Link href="/" className="text-2xl font-black text-gray-800 tracking-tight flex gap-1 items-center">
-                Mockup<span className="text-blue-600">Hub</span>
-              </Link>
-            </div>
-
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-4">
-              <Link href="/" className={`font-semibold px-3 py-2 rounded-lg transition-colors ${pathname === "/" ? "text-blue-600 bg-blue-50" : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"}`}>
-                Home
-              </Link>
-
-              {/* Tools Dropdown (Hover) */}
-              <div className="relative group">
-                <button className="flex items-center gap-1 font-semibold text-gray-600 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <Wrench size={18} /> Tools <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-200" />
-                </button>
-                
-                {/* Dropdown Menu */}
-                <div className="absolute left-0 mt-1 w-56 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left">
-                  <div className="p-2 flex flex-col gap-1">
-                    {toolsLinks.map((link) => (
-                      <Link
-                        key={link.name}
-                        href={link.path}
-                        className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                          pathname === link.path ? "bg-blue-50 text-blue-600" : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                        }`}
-                      >
-                        {link.icon} {link.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="flex items-center md:hidden">
-              <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 hover:text-blue-600">
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-            </div>
+    <header className="fixed top-0 inset-x-0 z-50 flex justify-center px-4 pt-4 md:pt-6 pointer-events-none">
+      {/* Floating Container */}
+      <div 
+        className={`pointer-events-auto w-full max-w-6xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-between px-5 md:px-6 
+        ${isScrolled 
+          ? "h-[64px] bg-white/70 backdrop-blur-xl border border-slate-900/5 shadow-[0_8px_30px_rgb(15,23,42,0.06)] rounded-[20px]" 
+          : "h-[76px] bg-white/40 backdrop-blur-md border border-white/40 shadow-[0_4px_20px_rgb(15,23,42,0.02)] rounded-[22px]"
+        }`}
+      >
+        {/* Logo Section */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-xl bg-[#111827] text-white flex items-center justify-center shadow-md shadow-slate-900/20 group-hover:scale-105 transition-transform duration-300">
+            <Layers size={22} strokeWidth={2.5} />
           </div>
+          <span className="font-extrabold text-[22px] tracking-tight text-[#111827]">MockupHub</span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-8">
+          <Link href="/tools" className="text-sm font-semibold text-slate-600 hover:text-[#111827] transition-colors">Tools</Link>
+          <Link href="/ai" className="text-sm font-semibold text-slate-600 hover:text-[#111827] transition-colors">AI Tools</Link>
+          <Link href="/calculators" className="text-sm font-semibold text-slate-600 hover:text-[#111827] transition-colors">Calculators</Link>
+          <Link href="/developer" className="text-sm font-semibold text-slate-600 hover:text-[#111827] transition-colors">Developer</Link>
+        </nav>
+
+        {/* Actions (Search + Get Started) */}
+        <div className="hidden lg:flex items-center gap-3">
+          <button className="flex items-center gap-2 text-slate-500 hover:text-slate-900 px-3 py-2 rounded-xl hover:bg-slate-100/50 transition-all text-sm font-medium">
+            <Search size={18} strokeWidth={2} />
+            <kbd className="hidden xl:inline-flex items-center gap-1 bg-white border border-slate-200/80 rounded-[6px] px-2 py-0.5 text-[11px] font-sans text-slate-400 shadow-sm">
+              ⌘ K
+            </kbd>
+          </button>
+          <Link href="/explore" className="bg-[#111827] hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-[0_4px_14px_0_rgb(17,24,39,0.2)] hover:shadow-[0_6px_20px_rgba(17,24,39,0.23)] hover:-translate-y-0.5">
+            Get Started
+          </Link>
         </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full">
-            <div className="px-4 py-4 flex flex-col gap-2">
-              <Link href="/" onClick={() => setIsOpen(false)} className={`font-semibold px-4 py-3 rounded-lg ${pathname === "/" ? "bg-blue-50 text-blue-600" : "text-gray-600"}`}>
-                Home
-              </Link>
-              
-              <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">Our Tools</div>
-              
-              {toolsLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium ${
-                    pathname === link.path ? "bg-blue-50 text-blue-600" : "text-gray-600 hover:bg-gray-50"
-                  }`}
-                >
-                  <span className={`${pathname === link.path ? "text-blue-600" : "text-gray-400"}`}>{link.icon}</span> 
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </nav>
-      <div className="h-16"></div>
-    </>
+        {/* Mobile Hamburger */}
+        <button 
+          className="lg:hidden p-2 text-slate-600 bg-white/50 rounded-xl"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+    </header>
   );
 }
