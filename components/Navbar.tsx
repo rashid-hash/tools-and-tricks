@@ -32,7 +32,7 @@ export default function Navbar() {
           <div className="w-10 h-10 rounded-xl bg-[#111827] text-white flex items-center justify-center shadow-md shadow-slate-900/20 group-hover:scale-105 transition-transform duration-300">
             <Layers size={22} strokeWidth={2.5} />
           </div>
-          <span className="font-extrabold text-[22px] tracking-tight text-[#111827]">MockupHub</span>
+          <span className="font-extrabold text-[22px] tracking-tight text-[#111827]">Tools&Tricks</span>
         </Link>
 
         {/* Desktop Navigation */}

@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar"; // Navbar ইমপোর্ট কর
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MockupHub - Free Screenshot Generators",
+  title: "Tools&Tricks - Free Screenshot Generators",
   description: "Create WhatsApp, bKash, and Nagad mockup screenshots easily.",
 };
 
