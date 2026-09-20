@@ -1,13 +1,14 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar"; // Navbar ইমপোর্ট করা হলো
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Tools&Tricks - Free Screenshot Generators",
-  description: "Create WhatsApp, bKash, and Nagad mockup screenshots easily.",
+  title: "MockupHub - Premium Tools for Everyday Tasks",
+  description: "A fast, minimal, and premium collection of everyday utility tools.",
 };
 
 export default function RootLayout({
@@ -16,9 +17,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar /> {/* ওয়েবসাইটের সব পেজেই এখন এটি দেখাবে */}
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
+        <Navbar />
         <main>{children}</main>
       </body>
     </html>
