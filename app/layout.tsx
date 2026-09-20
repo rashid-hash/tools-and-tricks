@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MockupHub - Premium Tools for Everyday Tasks",
+  title: "Tools&Tricks - Premium Tools for Everyday Tasks",
   description: "A fast, minimal, and premium collection of everyday utility tools.",
 };
 
