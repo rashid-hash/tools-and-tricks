@@ -3,21 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  ChevronDown, 
-  Menu, 
-  X, 
-  Minimize, 
-  Maximize, 
-  Crop, 
-  FileImage, 
-  Image as ImageIcon, 
-  Layers, 
-  FileText, 
-  UserSquare,
-  Sparkles,
-  Files,
-  Scissors,
-  File
+  ChevronDown, Menu, X, Minimize, Maximize, Crop, FileImage, 
+  Image as ImageIcon, Layers, FileText, UserSquare, Sparkles, 
+  Files, Scissors, File, Braces, ShieldCheck, FileJson, 
+  Terminal, Link2, Key, Clock, Code2
 } from "lucide-react";
 
 export default function Navbar() {
@@ -43,6 +32,21 @@ export default function Navbar() {
     { name: "JPG → PDF", href: "/tools/image-to-pdf", icon: FileText },
   ];
 
+  // Developer Tools List - Group 1 (JSON)
+  const jsonTools = [
+    { name: "JSON Formatter", href: "/tools/json-formatter", icon: Braces },
+    { name: "JSON Validator", href: "/tools/json-validator", icon: ShieldCheck },
+    { name: "JSON Minifier", href: "/tools/json-minifier", icon: FileJson },
+  ];
+
+  // Developer Tools List - Group 2 (Utilities)
+  const devUtilities = [
+    { name: "Base64 Encoder", href: "/tools/base64", icon: Terminal },
+    { name: "URL Encoder/Decoder", href: "/tools/url-encoder", icon: Link2 },
+    { name: "UUID Generator", href: "/tools/uuid-generator", icon: Key },
+    { name: "Timestamp Converter", href: "/tools/timestamp-converter", icon: Clock },
+  ];
+
   return (
     <nav className="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
       <div className="max-w-[1300px] mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
@@ -58,16 +62,14 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
           
-          {/* Tools Dropdown (Mega Menu Style) */}
+          {/* General Tools Dropdown */}
           <div className="relative group py-8">
             <button className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors font-bold">
               Tools <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
             </button>
 
-            {/* Dropdown Panel - Expanded for 3 Columns */}
             <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[850px] bg-white border border-slate-200 rounded-3xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-6 flex gap-6">
               
-              {/* Category 1: Utility Tools */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <Sparkles size={14} className="text-emerald-500" /> Utility
@@ -81,10 +83,8 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Vertical Divider */}
               <div className="w-px bg-slate-100"></div>
 
-              {/* Category 2: Image Editing Tools */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <ImageIcon size={14} className="text-blue-500" /> Image Editing
@@ -99,10 +99,8 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Vertical Divider */}
               <div className="w-px bg-slate-100"></div>
 
-              {/* Category 3: PDF Tools */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <File size={14} className="text-red-500" /> PDF Tools
@@ -121,7 +119,48 @@ export default function Navbar() {
           </div>
 
           <Link href="/ai-tools" className="hover:text-emerald-600 transition-colors font-bold">AI Tools</Link>
-          <Link href="/developer" className="hover:text-emerald-600 transition-colors font-bold">Developer</Link>
+          
+          {/* Developer Tools Dropdown */}
+          <div className="relative group py-8">
+            <button className="flex items-center gap-1.5 hover:text-cyan-600 transition-colors font-bold">
+              Developer <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+            </button>
+
+            <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[550px] bg-white border border-slate-200 rounded-3xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-6 flex gap-6">
+              
+              <div className="flex-1">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <Braces size={14} className="text-cyan-500" /> JSON Tools
+                </p>
+                <div className="flex flex-col gap-1">
+                  {jsonTools.map((tool) => (
+                    <Link key={tool.name} href={tool.href} className="flex items-center gap-2 hover:text-cyan-600 hover:bg-cyan-50/50 p-2 rounded-lg transition-colors text-[13px] font-semibold text-slate-600">
+                      <tool.icon size={15} className="text-slate-400" />
+                      {tool.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-px bg-slate-100"></div>
+
+              <div className="flex-1">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <Code2 size={14} className="text-indigo-500" /> Dev Utilities
+                </p>
+                <div className="flex flex-col gap-1">
+                  {devUtilities.map((tool) => (
+                    <Link key={tool.name} href={tool.href} className="flex items-center gap-2 hover:text-indigo-600 hover:bg-indigo-50/50 p-2 rounded-lg transition-colors text-[13px] font-semibold text-slate-600">
+                      <tool.icon size={15} className="text-slate-400" />
+                      {tool.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
 
         {/* Action Button */}
@@ -142,7 +181,6 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 p-4 flex flex-col gap-6 max-h-[80vh] overflow-y-auto">
           
-          {/* Mobile Image Tools */}
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Image Editing Tools</p>
             <div className="grid grid-cols-2 gap-2">
@@ -154,13 +192,23 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile PDF Tools */}
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">PDF Tools</p>
             <div className="grid grid-cols-2 gap-2">
               {pdfTools.map((tool) => (
                 <Link key={tool.name} href={tool.href} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
                   <tool.icon size={16} className="text-red-400" /> {tool.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Developer Tools</p>
+            <div className="grid grid-cols-1 gap-2">
+              {[...jsonTools, ...devUtilities].map((tool) => (
+                <Link key={tool.name} href={tool.href} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
+                  <tool.icon size={16} className="text-cyan-500" /> {tool.name}
                 </Link>
               ))}
             </div>
