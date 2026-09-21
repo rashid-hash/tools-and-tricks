@@ -7,7 +7,7 @@ import {
   Image as ImageIcon, Layers, FileText, UserSquare, Sparkles, 
   Files, Scissors, File, Braces, ShieldCheck, FileJson, 
   Terminal, Link2, Key, Clock, Code2, AlignLeft, Type, Eraser,
-  QrCode, Scale, Globe2, Timer, Palette
+  QrCode, Scale, Globe2, Timer, Palette, Bot
 } from "lucide-react";
 
 export default function Navbar() {
@@ -158,7 +158,9 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Link href="/ai-tools" className="hover:text-emerald-600 transition-colors font-bold">AI Tools</Link>
+          <Link href="/ai-tools" className="hover:text-indigo-600 transition-colors font-bold flex items-center gap-1.5">
+            <Bot size={16} className="text-indigo-500" /> AI Tools
+          </Link>
           
           {/* Developer Tools Dropdown */}
           <div className="relative group py-8">
@@ -221,6 +223,15 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 p-4 flex flex-col gap-6 max-h-[80vh] overflow-y-auto">
           
+          {/* AI Tools prominent link in mobile menu */}
+          <Link 
+            href="/ai-tools" 
+            onClick={() => setIsOpen(false)}
+            className="flex items-center justify-center gap-2 p-4 bg-indigo-50 border border-indigo-100 rounded-2xl text-[15px] font-bold text-indigo-700 hover:bg-indigo-100 transition-colors"
+          >
+            <Bot size={20} /> Browse All AI Tools <Sparkles size={16} />
+          </Link>
+
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Utility Tools</p>
             <div className="grid grid-cols-2 gap-2">
