@@ -6,7 +6,7 @@ import {
   ChevronDown, Menu, X, Minimize, Maximize, Crop, FileImage, 
   Image as ImageIcon, Layers, FileText, UserSquare, Sparkles, 
   Files, Scissors, File, Braces, ShieldCheck, FileJson, 
-  Terminal, Link2, Key, Clock, Code2
+  Terminal, Link2, Key, Clock, Code2, AlignLeft, Type, Eraser
 } from "lucide-react";
 
 export default function Navbar() {
@@ -30,6 +30,14 @@ export default function Navbar() {
     { name: "Compress PDF", href: "/tools/compress-pdf", icon: Minimize },
     { name: "PDF → JPG", href: "/tools/pdf-to-jpg", icon: ImageIcon },
     { name: "JPG → PDF", href: "/tools/image-to-pdf", icon: FileText },
+  ];
+
+  // Text Tools List
+  const textTools = [
+    { name: "Word Counter", href: "/tools/word-counter", icon: AlignLeft },
+    { name: "Case Converter", href: "/tools/case-converter", icon: Type },
+    { name: "Duplicate Remover", href: "/tools/duplicate-remover", icon: Layers },
+    { name: "Text Cleaner", href: "/tools/text-cleaner", icon: Eraser },
   ];
 
   // Developer Tools List - Group 1 (JSON)
@@ -62,14 +70,16 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
           
-          {/* General Tools Dropdown */}
+          {/* General Tools Dropdown (Mega Menu with 4 columns now) */}
           <div className="relative group py-8">
             <button className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors font-bold">
               Tools <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
             </button>
 
-            <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[850px] bg-white border border-slate-200 rounded-3xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-6 flex gap-6">
+            {/* Increased width to accommodate 4 columns */}
+            <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[1050px] bg-white border border-slate-200 rounded-3xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-6 flex gap-6">
               
+              {/* Utility Column */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <Sparkles size={14} className="text-emerald-500" /> Utility
@@ -79,12 +89,13 @@ export default function Navbar() {
                   <Link href="/tools/dps-calculator" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">DPS Calculator</Link>
                   <Link href="/tools/bus-fare" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">Bus Fare Calculator</Link>
                   <Link href="/tools/house-rent" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">House Rent Splitter</Link>
-                  <Link href="/tools" className="text-emerald-600 font-bold p-2 mt-2">View all 15+ utilities &rarr;</Link>
+                  <Link href="/tools" className="text-emerald-600 font-bold p-2 mt-2">View all utilities &rarr;</Link>
                 </div>
               </div>
 
               <div className="w-px bg-slate-100"></div>
 
+              {/* Image Editing Column */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <ImageIcon size={14} className="text-blue-500" /> Image Editing
@@ -101,6 +112,7 @@ export default function Navbar() {
 
               <div className="w-px bg-slate-100"></div>
 
+              {/* PDF Tools Column */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <File size={14} className="text-red-500" /> PDF Tools
@@ -108,6 +120,23 @@ export default function Navbar() {
                 <div className="flex flex-col gap-1">
                   {pdfTools.map((tool) => (
                     <Link key={tool.name} href={tool.href} className="flex items-center gap-2 hover:text-red-600 hover:bg-slate-50 p-2 rounded-lg transition-colors text-[13px] font-semibold text-slate-600">
+                      <tool.icon size={15} className="text-slate-400" />
+                      {tool.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <div className="w-px bg-slate-100"></div>
+
+              {/* Text Tools Column (New) */}
+              <div className="flex-1">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <Type size={14} className="text-violet-500" /> Text Tools
+                </p>
+                <div className="flex flex-col gap-1">
+                  {textTools.map((tool) => (
+                    <Link key={tool.name} href={tool.href} className="flex items-center gap-2 hover:text-violet-600 hover:bg-slate-50 p-2 rounded-lg transition-colors text-[13px] font-semibold text-slate-600">
                       <tool.icon size={15} className="text-slate-400" />
                       {tool.name}
                     </Link>
@@ -185,7 +214,7 @@ export default function Navbar() {
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Image Editing Tools</p>
             <div className="grid grid-cols-2 gap-2">
               {imageTools.map((tool) => (
-                <Link key={tool.name} href={tool.href} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
+                <Link key={tool.name} href={tool.href} onClick={() => setIsOpen(false)} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
                   <tool.icon size={16} className="text-blue-400" /> {tool.name}
                 </Link>
               ))}
@@ -196,8 +225,19 @@ export default function Navbar() {
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">PDF Tools</p>
             <div className="grid grid-cols-2 gap-2">
               {pdfTools.map((tool) => (
-                <Link key={tool.name} href={tool.href} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
+                <Link key={tool.name} href={tool.href} onClick={() => setIsOpen(false)} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
                   <tool.icon size={16} className="text-red-400" /> {tool.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Text Tools</p>
+            <div className="grid grid-cols-2 gap-2">
+              {textTools.map((tool) => (
+                <Link key={tool.name} href={tool.href} onClick={() => setIsOpen(false)} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
+                  <tool.icon size={16} className="text-violet-500" /> {tool.name}
                 </Link>
               ))}
             </div>
@@ -207,7 +247,7 @@ export default function Navbar() {
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Developer Tools</p>
             <div className="grid grid-cols-1 gap-2">
               {[...jsonTools, ...devUtilities].map((tool) => (
-                <Link key={tool.name} href={tool.href} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
+                <Link key={tool.name} href={tool.href} onClick={() => setIsOpen(false)} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
                   <tool.icon size={16} className="text-cyan-500" /> {tool.name}
                 </Link>
               ))}
