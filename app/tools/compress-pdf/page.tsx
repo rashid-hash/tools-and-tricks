@@ -68,7 +68,7 @@ export default function CompressPdfTool() {
       // Save with object streams to maximize compression
       const pdfBytes = await newPdf.save({ useObjectStreams: true });
       
-      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const blob = new Blob([pdfBytes as any], { type: "application/pdf" });
       setCompressedBlob(blob);
       setCompressedSize(blob.size);
 

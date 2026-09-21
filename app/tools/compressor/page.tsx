@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
-import { Image as ImageIcon, Sparkles, UploadCloud, Download, Minimize, Settings2, FileImage, ArrowRightRight, Trash2 } from "lucide-react";
+import { Image as ImageIcon, Sparkles, UploadCloud, Download, Minimize, Settings2, FileImage, Trash2 } from "lucide-react";
 import RelatedSidebar, { SuggestedTool } from "@/components/RelatedSidebar";
 
 const notoSansBengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700", "800"] });
@@ -14,7 +14,7 @@ const imageRelatedTools: SuggestedTool[] = [
   { id: "passport", name: "Passport Photo", desc: "Make BD standard passport photos.", icon: ImageIcon, href: "/tools/passport-photo", color: "text-indigo-500", bg: "bg-indigo-100" }
 ];
 
-// Fallback Icon for Resizer (Since Maximize wasn't imported in this scope, let's use ArrowRightRight as placeholder if needed, but we imported it above ideally. Let's redefine here to be safe)
+// Fallback Icon for Resizer (Since Maximize wasn't imported in this scope, let's use ArrowRight as placeholder if needed, but we imported it above ideally. Let's redefine here to be safe)
 import { Maximize } from "lucide-react";
 
 export default function ImageCompressor() {
