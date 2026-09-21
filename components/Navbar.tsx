@@ -6,11 +6,22 @@ import {
   ChevronDown, Menu, X, Minimize, Maximize, Crop, FileImage, 
   Image as ImageIcon, Layers, FileText, UserSquare, Sparkles, 
   Files, Scissors, File, Braces, ShieldCheck, FileJson, 
-  Terminal, Link2, Key, Clock, Code2, AlignLeft, Type, Eraser
+  Terminal, Link2, Key, Clock, Code2, AlignLeft, Type, Eraser,
+  QrCode, Scale, Globe2, Timer, Palette
 } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Utility Tools List
+  const utilityTools = [
+    { name: "QR Generator", href: "/tools/qr-generator", icon: QrCode },
+    { name: "Password Gen", href: "/tools/password-generator", icon: Key },
+    { name: "Unit Converter", href: "/tools/unit-converter", icon: Scale },
+    { name: "Time Zone", href: "/tools/time-zone-converter", icon: Globe2 },
+    { name: "Countdown Timer", href: "/tools/countdown-timer", icon: Timer },
+    { name: "Color Converter", href: "/tools/color-converter", icon: Palette },
+  ];
 
   // Image Editing Tools List
   const imageTools = [
@@ -70,26 +81,26 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8 font-medium text-slate-600 text-sm">
           
-          {/* General Tools Dropdown (Mega Menu with 4 columns now) */}
+          {/* General Tools Dropdown */}
           <div className="relative group py-8">
             <button className="flex items-center gap-1.5 hover:text-emerald-600 transition-colors font-bold">
               Tools <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
             </button>
 
-            {/* Increased width to accommodate 4 columns */}
             <div className="absolute top-[70px] left-1/2 -translate-x-1/2 w-[1050px] bg-white border border-slate-200 rounded-3xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 p-6 flex gap-6">
               
-              {/* Utility Column */}
+              {/* Utility Tools Column */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                  <Sparkles size={14} className="text-emerald-500" /> Utility
+                  <Sparkles size={14} className="text-emerald-500" /> Utility Tools
                 </p>
-                <div className="flex flex-col gap-2">
-                  <Link href="/tools/salary-calculator" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">Salary Breakdown</Link>
-                  <Link href="/tools/dps-calculator" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">DPS Calculator</Link>
-                  <Link href="/tools/bus-fare" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">Bus Fare Calculator</Link>
-                  <Link href="/tools/house-rent" className="hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors">House Rent Splitter</Link>
-                  <Link href="/tools" className="text-emerald-600 font-bold p-2 mt-2">View all utilities &rarr;</Link>
+                <div className="flex flex-col gap-1">
+                  {utilityTools.map((tool) => (
+                    <Link key={tool.name} href={tool.href} className="flex items-center gap-2 hover:text-emerald-600 hover:bg-slate-50 p-2 rounded-lg transition-colors text-[13px] font-semibold text-slate-600">
+                      <tool.icon size={15} className="text-slate-400" />
+                      {tool.name}
+                    </Link>
+                  ))}
                 </div>
               </div>
 
@@ -129,7 +140,7 @@ export default function Navbar() {
 
               <div className="w-px bg-slate-100"></div>
 
-              {/* Text Tools Column (New) */}
+              {/* Text Tools Column */}
               <div className="flex-1">
                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                   <Type size={14} className="text-violet-500" /> Text Tools
@@ -211,7 +222,18 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-slate-100 p-4 flex flex-col gap-6 max-h-[80vh] overflow-y-auto">
           
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Image Editing Tools</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Utility Tools</p>
+            <div className="grid grid-cols-2 gap-2">
+              {utilityTools.map((tool) => (
+                <Link key={tool.name} href={tool.href} onClick={() => setIsOpen(false)} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
+                  <tool.icon size={16} className="text-emerald-500" /> {tool.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Image Editing</p>
             <div className="grid grid-cols-2 gap-2">
               {imageTools.map((tool) => (
                 <Link key={tool.name} href={tool.href} onClick={() => setIsOpen(false)} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl text-[13px] font-semibold text-slate-600">
