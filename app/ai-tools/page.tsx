@@ -22,7 +22,7 @@ const CATEGORIES = [
 // All 30 AI Tools Data
 const AI_TOOLS = [
   // Prompts & Design
-  { id: "prompt-gen", name: "AI Prompt Generator", desc: "Generate perfect prompts for ChatGPT or Midjourney.", icon: Bot, category: "Prompts", color: "text-violet-500", bg: "bg-violet-100", border: "hover:border-violet-400" },
+  { id: "prompt-generator", name: "AI Prompt Generator", desc: "Generate perfect prompts for ChatGPT or Midjourney.", icon: Bot, category: "Prompts", color: "text-violet-500", bg: "bg-violet-100", border: "hover:border-violet-400" },  
   { id: "prompt-enhancer", name: "AI Prompt Enhancer", desc: "Upgrade your basic prompts to pro-level instantly.", icon: Sparkles, category: "Prompts", color: "text-fuchsia-500", bg: "bg-fuchsia-100", border: "hover:border-fuchsia-400" },
   { id: "image-prompt", name: "AI Image Prompt", desc: "Create detailed prompts for AI image generators.", icon: ImageIcon, category: "Prompts", color: "text-blue-500", bg: "bg-blue-100", border: "hover:border-blue-400" },
   { id: "image-editing", name: "AI Image Editing Prompt", desc: "Generate prompts for photo manipulation and editing.", icon: Palette, category: "Prompts", color: "text-pink-500", bg: "bg-pink-100", border: "hover:border-pink-400" },

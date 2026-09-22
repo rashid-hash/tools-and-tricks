@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import { 
   Languages, Sparkles, Copy, CheckCircle2, 
-  RefreshCw, FileEdit, StopCircle, Settings2,
-  AlignLeft, Type
+  FileEdit, StopCircle, Settings2, AlignLeft 
 } from "lucide-react";
 import Link from "next/link";
 
@@ -20,11 +19,9 @@ export default function BanglaWriterTool() {
   const [output, setOutput] = useState("");
   const [isCopied, setIsCopied] = useState(false);
   
-  // Ref for auto-scrolling to bottom during streaming
   const outputRef = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Mock AI Streaming Effect
   const handleGenerate = async () => {
     if (!topic.trim()) return;
     
@@ -34,38 +31,55 @@ export default function BanglaWriterTool() {
 
     abortControllerRef.current = new AbortController();
 
-    // Simulated AI Response
-    const mockResponse = `**${topic}** সম্পর্কে আপনার জন্য একটি আর্টিকেল নিচে দেওয়া হলো:
-
-বর্তমান সময়ে ${topic} একটি অত্যন্ত গুরুত্বপূর্ণ বিষয় হয়ে দাঁড়িয়েছে। প্রযুক্তি ও আধুনিকায়নের এই যুগে এর প্রভাব আমাদের দৈনন্দিন জীবনে ব্যাপকভাবে পরিলক্ষিত হচ্ছে। 
-
-**মূল বিষয়সমূহ:**
-১. এটি আমাদের কাজের গতিকে অনেকগুণ বাড়িয়ে দেয়।
-২. সঠিক ব্যবহারের মাধ্যমে আমরা সময় এবং অর্থ উভয়ই বাঁচাতে পারি।
-৩. ভবিষ্যৎ প্রজন্মের জন্য এটি একটি সম্ভাবনাময় ক্ষেত্র তৈরি করছে।
-
-**উপসংহার:**
-পরিশেষে বলা যায় যে, ${topic} এর সঠিক ব্যবহার ও প্রয়োগ আমাদের জীবনমানকে আরও উন্নত করতে সাহায্য করবে। আমাদের উচিত এর ইতিবাচক দিকগুলো গ্রহণ করা।
-
-*(নোট: এটি একটি ডেমো টেক্সট। পরবর্তীতে এখানে আসল Google Gemini বা OpenAI API যুক্ত করা হবে, তখন আপনার কমান্ড অনুযায়ী ১০০% রিয়েল এবং ইউনিক টেক্সট জেনারেট হবে।)*`;
-
-    const words = mockResponse.split('');
-    let currentText = "";
-
-    // Typing effect logic
-    for (let i = 0; i < words.length; i++) {
-      if (abortControllerRef.current?.signal.aborted) break;
+    try {
+      const aiPrompt = `You are an expert Bengali Content Writer. 
+      Topic: "${topic}"
+      Tone: ${tone}
+      Length: ${length}
       
-      currentText += words[i];
-      setOutput(currentText);
+      Instructions:
+      1. Write the entire response strictly in standard Bengali (বাংলা) language.
+      2. Make it high-quality, engaging, and well-structured.
+      3. Start directly with the content, without any introductory chatter like "Here is your article".`;
+
+      // Call our custom Native API Route
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: aiPrompt }),
+        signal: abortControllerRef.current.signal
+      });
+
+      const data = await res.json();
       
-      // Auto scroll to bottom
-      if (outputRef.current) {
-        outputRef.current.scrollTop = outputRef.current.scrollHeight;
+      if (data.error) {
+        setOutput(`Error: ${data.error}`);
+        setIsGenerating(false);
+        return;
       }
-      
-      // Random delay for realistic typing feel (10ms to 30ms)
-      await new Promise(res => setTimeout(res, Math.random() * 20 + 10));
+
+      // Here is where the REAL magic happens
+      const fullText = data.text;
+      const words = fullText.split('');
+      let currentText = "";
+
+      for (let i = 0; i < words.length; i++) {
+        if (abortControllerRef.current?.signal.aborted) break;
+        
+        currentText += words[i];
+        setOutput(currentText);
+        
+        if (outputRef.current) {
+          outputRef.current.scrollTop = outputRef.current.scrollHeight;
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, Math.random() * 10 + 5));
+      }
+
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        setOutput("দুঃখিত, একটি সমস্যা হয়েছে। দয়া করে API Key ঠিক আছে কিনা চেক করুন।");
+      }
     }
 
     setIsGenerating(false);
@@ -122,7 +136,7 @@ export default function BanglaWriterTool() {
               <textarea
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                placeholder="কি সম্পর্কে লিখতে চান? (যেমন: ফ্রিল্যান্সিং এর ভবিষ্যৎ, গরুর খামার ব্যবস্থাপনা...)"
+                placeholder="কি সম্পর্কে লিখতে চান? (যেমন: প্রোটিন বা আমিষ কী?)"
                 className="w-full h-32 bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 rounded-2xl p-4 text-sm font-medium text-[#111827] outline-none transition-all resize-none"
               />
             </div>
@@ -174,7 +188,6 @@ export default function BanglaWriterTool() {
         {/* Right Side: Output Panel */}
         <div className="flex-1 w-full bg-[#0F172A] rounded-[32px] shadow-[0_20px_60px_rgb(15,23,42,0.15)] border border-slate-700/50 flex flex-col overflow-hidden h-[600px] relative">
           
-          {/* Output Toolbar */}
           <div className="bg-[#1E293B] border-b border-slate-700 px-6 py-4 flex justify-between items-center z-10">
             <div className="flex items-center gap-3">
               <div className={`w-2 h-2 rounded-full ${isGenerating ? "bg-emerald-400 animate-pulse" : "bg-slate-500"}`}></div>
@@ -204,7 +217,6 @@ export default function BanglaWriterTool() {
             </div>
           </div>
 
-          {/* Text/Streaming Area */}
           <div 
             ref={outputRef}
             className="flex-1 p-6 md:p-8 overflow-y-auto custom-scrollbar relative"
