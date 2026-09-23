@@ -5,7 +5,8 @@ import { Noto_Sans_Bengali } from "next/font/google";
 import { 
   Sparkles, Copy, CheckCircle2, 
   StopCircle, Settings2, MonitorPlay, 
-  Clock, Clapperboard
+  Clock, Clapperboard,
+  MonitorPlay
 } from "lucide-react";
 import Link from "next/link";
 
@@ -220,7 +221,7 @@ export default function YouTubeScriptTool() {
               </div>
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-slate-500 opacity-60">
-                <Youtube size={48} className="mb-4 text-slate-600" />
+                <MonitorPlay size={48} className="mb-4 text-slate-600" />
                 <p className="font-medium text-center max-w-sm">
                   ইউটিউব ভিডিওর টপিক লিখে জেনারেট বাটনে ক্লিক করুন। 
                 </p>
