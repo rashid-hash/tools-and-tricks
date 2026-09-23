@@ -5,8 +5,7 @@ import { Noto_Sans_Bengali } from "next/font/google";
 import { 
   Sparkles, Copy, CheckCircle2, 
   StopCircle, Settings2, MonitorPlay, 
-  Clock, Clapperboard,
-  MonitorPlay
+  Clock, Clapperboard
 } from "lucide-react";
 import Link from "next/link";
 
