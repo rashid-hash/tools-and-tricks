@@ -8,7 +8,8 @@ import {
   Clapperboard, Video, Image as ImageIcon, Palette, ShoppingBag, 
   Megaphone, Briefcase, Tag, Mail, MessageSquare, FileEdit, 
   GraduationCap, Brain, Calendar, ZoomIn, Flame, Lightbulb, 
-  Languages, Laptop, Bug, LayoutGrid, ChevronRight
+  Languages, Laptop, Bug, LayoutGrid, ChevronRight,
+  MonitorPlay
 } from "lucide-react";
 
 const notoSansBengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700", "800"] });
@@ -38,7 +39,7 @@ const AI_TOOLS = [
   { id: "caption-gen", name: "AI Caption Generator", desc: "Catchy captions for Instagram, Facebook, and TikTok.", icon: Smartphone, category: "Social Media", color: "text-rose-500", bg: "bg-rose-100", border: "hover:border-rose-400" },
   { id: "hashtag-gen", name: "AI Hashtag Generator", desc: "Find trending hashtags to maximize your post reach.", icon: Hash, category: "Social Media", color: "text-indigo-500", bg: "bg-indigo-100", border: "hover:border-indigo-400" },
   { id: "reel-script", name: "AI Reel Script", desc: "Engaging 30-60s scripts for Reels and TikTok videos.", icon: Clapperboard, category: "Social Media", color: "text-red-500", bg: "bg-red-100", border: "hover:border-red-400" },
-  { id: "yt-script", name: "AI YouTube Script", desc: "Full-length YouTube video scripts with intro and hooks.", icon: Video, category: "Social Media", color: "text-red-600", bg: "bg-red-100", border: "hover:border-red-400" },
+  { id: "yt-script", name: "AI YouTube Script", desc: "Full-length YouTube video scripts with intro and hooks.", icon: MonitorPlay, category: "Social Media", color: "text-red-600", bg: "bg-red-100", border: "hover:border-red-400" },
   { id: "viral-hook", name: "AI Viral Hook", desc: "Scroll-stopping hooks to capture audience attention.", icon: Flame, category: "Social Media", color: "text-orange-500", bg: "bg-orange-100", border: "hover:border-orange-400" },
 
   // Bangla Special

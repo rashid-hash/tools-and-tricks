@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import { 
   Sparkles, Copy, CheckCircle2, 
-  StopCircle, Settings2, Youtube, 
+  StopCircle, Settings2, MonitorPlay, 
   Clock, Clapperboard
 } from "lucide-react";
 import Link from "next/link";
@@ -113,7 +113,7 @@ export default function YouTubeScriptTool() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-bold text-cyan-700 uppercase tracking-widest mb-4">
-              <Youtube size={14} className="text-cyan-500" /> Video Creation
+              <MonitorPlay size={14} className="text-cyan-500" /> Video Creation
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#111827] tracking-tight flex items-center gap-3">
               AI <span className="text-cyan-600">YouTube Script</span>
