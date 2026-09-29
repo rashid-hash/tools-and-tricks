@@ -163,8 +163,16 @@ export default function Navbar() {
           </Link>
 
           <Link href="/url-shortener" className="text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors">
-  URL Shortener
+            URL Shortener
+          </Link>
+
+          <Link 
+  href="/social-studio" 
+  className="ml-4 px-5 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-indigo-500/30 transition-all flex items-center gap-2"
+>
+  <Sparkles size={16} /> Social Studio
 </Link>
+
   
           {/* Developer Tools Dropdown */}
           <div className="relative group py-8">
