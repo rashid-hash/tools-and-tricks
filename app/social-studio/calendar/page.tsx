@@ -18,6 +18,16 @@ const FacebookIcon = ({ size = 16, className = "" }) => (
   </svg>
 );
 
+// Define a proper type for our posts to keep TypeScript happy
+interface ScheduledPost {
+  date: number;
+  time: string;
+  status: string;
+  content: string;
+  platform: string;
+  isAi?: boolean;
+}
+
 export default function ContentCalendarPage() {
   const [currentMonth, setCurrentMonth] = useState("September 2026");
 
@@ -27,14 +37,14 @@ export default function ContentCalendarPage() {
   
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  // Mock Scheduled Posts Data
-  const scheduledPosts = [
-    { date: 4, time: "10:00 AM", type: "Published", content: "Welcome to our new product line!", platform: "FB" },
-    { date: 8, time: "05:30 PM", type: "Published", content: "Weekly Agrotech tips 🌾", platform: "FB" },
-    { date: 15, time: "02:00 PM", type: "Draft", content: "Mid-month review draft", platform: "FB" },
-    { date: 22, time: "07:00 PM", type: "Scheduled", content: "Upcoming webinar announcement 🚀", platform: "FB", isAi: true },
-    { date: 26, time: "09:00 AM", type: "Scheduled", content: "Customer success story video", platform: "FB" },
-    { date: 28, time: "08:15 PM", type: "Scheduled", content: "Top 5 farming techniques for 2026", platform: "FB", isAi: true },
+  // Mock Scheduled Posts Data (Changed 'type' to 'status' to fix the TS error)
+  const scheduledPosts: ScheduledPost[] = [
+    { date: 4, time: "10:00 AM", status: "Published", content: "Welcome to our new product line!", platform: "FB" },
+    { date: 8, time: "05:30 PM", status: "Published", content: "Weekly Agrotech tips 🌾", platform: "FB" },
+    { date: 15, time: "02:00 PM", status: "Draft", content: "Mid-month review draft", platform: "FB" },
+    { date: 22, time: "07:00 PM", status: "Scheduled", content: "Upcoming webinar announcement 🚀", platform: "FB", isAi: true },
+    { date: 26, time: "09:00 AM", status: "Scheduled", content: "Customer success story video", platform: "FB" },
+    { date: 28, time: "08:15 PM", status: "Scheduled", content: "Top 5 farming techniques for 2026", platform: "FB", isAi: true },
   ];
 
   const getStatusColor = (status: string) => {
@@ -149,12 +159,12 @@ export default function ContentCalendarPage() {
                       {dayPosts.map((post, idx) => (
                         <div 
                           key={idx} 
-                          className={`p-2 rounded-lg border ${getStatusColor(post.status || post.type)} text-left shadow-sm cursor-pointer hover:opacity-80 transition-opacity`}
+                          className={`p-2 rounded-lg border ${getStatusColor(post.status)} text-left shadow-sm cursor-pointer hover:opacity-80 transition-opacity`}
                         >
                           <div className="flex items-center justify-between mb-1.5">
                             <span className="flex items-center text-[10px] font-extrabold uppercase tracking-wider">
-                              {getStatusIcon(post.status || post.type)}
-                              {post.type}
+                              {getStatusIcon(post.status)}
+                              {post.status}
                             </span>
                             {post.platform === "FB" && <FacebookIcon size={12} className="opacity-70" />}
                           </div>
@@ -163,7 +173,8 @@ export default function ContentCalendarPage() {
                           </p>
                           <div className="flex items-center justify-between text-[10px] font-bold opacity-80">
                             <span>{post.time}</span>
-                            {post.isAi && <Zap size={10} className="text-amber-500" title="AI Generated" />}
+                            {/* Fixed the title prop TS error by wrapping with a span */}
+                            {post.isAi && <span title="AI Generated"><Zap size={10} className="text-amber-500" /></span>}
                           </div>
                         </div>
                       ))}
