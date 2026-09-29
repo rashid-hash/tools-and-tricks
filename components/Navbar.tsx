@@ -75,7 +75,7 @@ export default function Navbar() {
           <div className="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold text-xl">
             M
           </div>
-          <span className="font-extrabold text-xl tracking-tight text-slate-900">MockupHub</span>
+          <span className="font-extrabold text-xl tracking-tight text-slate-900">Tool's & Tricks</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -161,7 +161,11 @@ export default function Navbar() {
           <Link href="/ai-tools" className="hover:text-indigo-600 transition-colors font-bold flex items-center gap-1.5">
             <Bot size={16} className="text-indigo-500" /> AI Tools
           </Link>
-          
+
+          <Link href="/url-shortener" className="text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors">
+  URL Shortener
+</Link>
+  
           {/* Developer Tools Dropdown */}
           <div className="relative group py-8">
             <button className="flex items-center gap-1.5 hover:text-cyan-600 transition-colors font-bold">
