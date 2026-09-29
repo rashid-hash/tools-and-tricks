@@ -37,7 +37,7 @@ export default function SocialStudioDashboard() {
   ];
 
   return (
-    <div className={`min-h-screen bg-[#F4F7F9] flex font-sans ${notoSansBengali.className} text-slate-800`}>
+    <div className={`min-h-screen pt-20 md:pt-24 bg-[#F4F7F9] flex font-sans ${notoSansBengali.className} text-slate-800`}>
       
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
@@ -45,7 +45,7 @@ export default function SocialStudioDashboard() {
       )}
 
       {/* Sidebar - Glassmorphism UI */}
-      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white/80 backdrop-blur-xl border-r border-slate-200/60 transform ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col`}>
+      <aside className={`fixed top-20 md:top-24 lg:top-0 lg:static inset-y-0 left-0 z-50 w-64 bg-white/80 backdrop-blur-xl border-r border-slate-200/60 transform ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col`}>
         <div className="h-20 flex items-center px-6 border-b border-slate-100">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
@@ -114,15 +114,19 @@ export default function SocialStudioDashboard() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 md:gap-4">
-            <button className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
-              <Bell size={18} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
-            </button>
-            <button className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] text-sm font-bold rounded-xl transition-colors border border-[#1877F2]/20">
-              <FacebookIcon size={16} /> Connect Page
-            </button>
-          </div>
+          <div className="flex items-center gap-3 md:gap-4 relative z-50">
+  <button className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+    <Bell size={18} />
+    <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
+  </button>
+  
+  <Link 
+    href="/social-studio/accounts" 
+    className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] text-xs md:text-sm font-bold rounded-xl transition-colors border border-[#1877F2]/20"
+  >
+    <FacebookIcon size={16} /> <span className="hidden sm:inline">Connect Page</span>
+  </Link>
+</div>
         </header>
 
         {/* Dashboard Scrollable Content */}
@@ -226,10 +230,10 @@ export default function SocialStudioDashboard() {
                       <Sparkles size={20} className="group-hover:scale-110 transition-transform" />
                       <span className="text-xs font-bold text-center">AI Post<br/>Generator</span>
                     </button>
-                    <button className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors group">
-                      <FacebookIcon size={20} className="group-hover:scale-110 transition-transform" />
-                      <span className="text-xs font-bold text-center">Connect<br/>Page</span>
-                    </button>
+                    <Link href="/social-studio/accounts" className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors group">
+  <FacebookIcon size={20} className="group-hover:scale-110 transition-transform" />
+  <span className="text-xs font-bold text-center">Connect<br/>Page</span>
+</Link>
                     <button className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors group">
                       <CalendarDays size={20} className="group-hover:scale-110 transition-transform" />
                       <span className="text-xs font-bold text-center">Bulk<br/>Schedule</span>

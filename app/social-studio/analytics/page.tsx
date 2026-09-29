@@ -46,7 +46,7 @@ export default function AnalyticsPage() {
   ];
 
   return (
-    <div className={`min-h-screen bg-[#F4F7F9] font-sans ${notoSansBengali.className} text-slate-800 pb-20 pt-8`}>
+    <div className={`min-h-screen bg-[#F4F7F9] font-sans ${notoSansBengali.className} text-slate-800 pb-20 pt-28`}>
       
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         
