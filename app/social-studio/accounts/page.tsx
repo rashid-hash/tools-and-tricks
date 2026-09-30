@@ -23,30 +23,30 @@ export default function ConnectedAccountsPage() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // ডামি ডেটা মুছে স্টেট একদম ফাঁকা করে দিলাম
+  // Connected Pages State
   const [connectedPages, setConnectedPages] = useState<any[]>([]);
 
+  // URL থেকে ফেসবুকের ডাটা রিসিভ করা এবং UI তে দেখানো
   useEffect(() => {
     // localStorage থেকে সেভ করা পেজগুলো লোড করছি
     const savedPages = localStorage.getItem('social_studio_connected_pages');
     if (savedPages) {
       try {
         const parsedPages = JSON.parse(savedPages);
-        // ডামি পেজগুলো ফিল্টার করে চিরতরে বাদ দিয়ে দিচ্ছি
+        // ডামি পেজগুলো বাদ দিয়ে শুধু রিয়েল পেজ রাখছি
         const realPages = parsedPages.filter((p: any) => p.name !== "Digital Agro BD" && p.name !== "MockupHub Official");
         
         setConnectedPages(realPages);
-        // ফিল্টার করা আসল ডেটা আবার localStorage এ সেভ করছি
         localStorage.setItem('social_studio_connected_pages', JSON.stringify(realPages));
       } catch (e) {
         console.error("Failed to parse saved pages", e);
       }
     }
 
-    // URL থেকে ফেসবুকের নতুন পেজ রিসিভ করা
     const params = new URLSearchParams(window.location.search);
     const success = params.get('success');
     const pageName = params.get('pageName');
+    const pageId = params.get('pageId');
     const noPages = params.get('no_pages');
 
     if (success === 'true' && pageName) {
@@ -56,7 +56,7 @@ export default function ConnectedAccountsPage() {
 
         const updatedPages = [
           { 
-            id: Date.now().toString(), 
+            id: pageId || Date.now().toString(), 
             name: pageName, 
             image: pageName.charAt(0).toUpperCase(), 
             status: "Connected", 
@@ -77,10 +77,23 @@ export default function ConnectedAccountsPage() {
     }
   }, []);
 
+  // Facebook Disconnect Function
+  const handleDisconnect = (idToDisconnect: string) => {
+    const isConfirm = window.confirm("Are you sure you want to disconnect this page?");
+    
+    if (isConfirm) {
+      setConnectedPages(prev => {
+        const updatedPages = prev.filter(page => page.id !== idToDisconnect);
+        // লোকাল স্টোরেজ আপডেট করে দিচ্ছি
+        localStorage.setItem('social_studio_connected_pages', JSON.stringify(updatedPages));
+        return updatedPages;
+      });
+    }
+  };
+
   // Real OAuth Connection Flow
   const handleFacebookConnect = () => {
     setIsConnecting(true);
-    // এটি ইউজারকে সরাসরি আমাদের ব্যাকএন্ড API তে পাঠাবে, যেখান থেকে ফেসবুক লগইন ওপেন হবে
     window.location.href = '/api/facebook/login';
   };
 
@@ -140,7 +153,7 @@ export default function ConnectedAccountsPage() {
           </button>
 
           {/* Connected Pages Cards */}
-          {connectedPages.map((page) => (
+          {connectedPages.filter(page => page.name.toLowerCase().includes(searchQuery.toLowerCase())).map((page) => (
             <div key={page.id} className="h-[220px] bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col justify-between group hover:shadow-xl hover:border-slate-200 transition-all relative overflow-hidden">
               
               <div className="absolute top-0 left-0 w-full h-1 bg-[#1877F2]"></div>
@@ -180,13 +193,19 @@ export default function ConnectedAccountsPage() {
                 </div>
               </div>
 
+              {/* Action Buttons on Hover */}
               <div className="flex items-center gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
                 {page.status !== "Connected" && (
                   <button className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-lg transition-colors">
                     <RefreshCw size={14} /> Reconnect
                   </button>
                 )}
-                <button className={`${page.status === "Connected" ? "w-full" : "w-auto px-3"} flex items-center justify-center gap-1.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-lg transition-colors`}>
+                
+                {/* Disconnect Button (Now Functional) */}
+                <button 
+                  onClick={() => handleDisconnect(page.id)}
+                  className={`${page.status === "Connected" ? "w-full" : "w-auto px-3"} flex items-center justify-center gap-1.5 py-2 bg-slate-50 hover:bg-rose-100 text-slate-600 hover:text-rose-600 text-xs font-bold rounded-lg transition-colors`}
+                >
                   <Unplug size={14} /> Disconnect
                 </button>
               </div>

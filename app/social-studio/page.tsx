@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import Link from "next/link";
 import { 
@@ -21,19 +21,41 @@ const FacebookIcon = ({ size = 24, className = "" }) => (
 
 export default function SocialStudioDashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Dynamic States for LocalStorage Data
+  const [scheduledPosts, setScheduledPosts] = useState<any[]>([]);
+  const [connectedPagesCount, setConnectedPagesCount] = useState(0);
 
-  // Mock Data for UI Visualization
+  // Load Data from LocalStorage
+  useEffect(() => {
+    // Load Scheduled Posts
+    const savedPosts = localStorage.getItem('social_studio_scheduled_posts');
+    if (savedPosts) {
+      try {
+        setScheduledPosts(JSON.parse(savedPosts));
+      } catch (error) {
+        console.error("Failed to load scheduled posts", error);
+      }
+    }
+
+    // Load Connected Pages Count
+    const savedPages = localStorage.getItem('social_studio_connected_pages');
+    if (savedPages) {
+      try {
+        const parsedPages = JSON.parse(savedPages);
+        setConnectedPagesCount(parsedPages.length);
+      } catch (error) {
+        console.error("Failed to load connected pages", error);
+      }
+    }
+  }, []);
+
+  // Dynamic Stats Array
   const stats = [
-    { title: "Connected Pages", value: "2", icon: FacebookIcon, color: "text-blue-600", bg: "bg-blue-100", trend: "Active" },
-    { title: "Scheduled Posts", value: "14", icon: Clock, color: "text-amber-600", bg: "bg-amber-100", trend: "+3 this week" },
+    { title: "Connected Pages", value: connectedPagesCount.toString(), icon: FacebookIcon, color: "text-blue-600", bg: "bg-blue-100", trend: "Active" },
+    { title: "Scheduled Posts", value: scheduledPosts.length.toString(), icon: Clock, color: "text-amber-600", bg: "bg-amber-100", trend: "Upcoming" },
     { title: "Published (30d)", value: "28", icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-100", trend: "+12% engagement" },
     { title: "AI Credits", value: "850", icon: Sparkles, color: "text-violet-600", bg: "bg-violet-100", trend: "Refills in 12 days" },
-  ];
-
-  const upcomingPosts = [
-    { id: 1, content: "5 Tips for Modern Farming 🌾", page: "Digital Agro BD", time: "Today, 07:00 PM", status: "Scheduled", type: "AI Generated" },
-    { id: 2, content: "Weekly Product Showcase 🚀", page: "MockupHub Official", time: "Tomorrow, 10:30 AM", status: "Draft", type: "Manual" },
-    { id: 3, content: "Customer Success Story 💡", page: "Digital Agro BD", time: "Oct 2, 05:15 PM", status: "Scheduled", type: "AI Generated" },
   ];
 
   return (
@@ -115,18 +137,18 @@ export default function SocialStudioDashboard() {
           </div>
 
           <div className="flex items-center gap-3 md:gap-4 relative z-50">
-  <button className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
-    <Bell size={18} />
-    <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
-  </button>
-  
-  <Link 
-    href="/social-studio/accounts" 
-    className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] text-xs md:text-sm font-bold rounded-xl transition-colors border border-[#1877F2]/20"
-  >
-    <FacebookIcon size={16} /> <span className="hidden sm:inline">Connect Page</span>
-  </Link>
-</div>
+            <button className="relative p-2.5 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+              <Bell size={18} />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
+            </button>
+            
+            <Link 
+              href="/social-studio/accounts" 
+              className="flex items-center gap-2 px-3 md:px-4 py-2 md:py-2.5 bg-[#1877F2]/10 hover:bg-[#1877F2]/20 text-[#1877F2] text-xs md:text-sm font-bold rounded-xl transition-colors border border-[#1877F2]/20"
+            >
+              <FacebookIcon size={16} /> <span className="hidden sm:inline">Connect Page</span>
+            </Link>
+          </div>
         </header>
 
         {/* Dashboard Scrollable Content */}
@@ -185,34 +207,48 @@ export default function SocialStudioDashboard() {
                   </div>
 
                   <div className="space-y-4">
-                    {upcomingPosts.map((post) => (
-                      <div key={post.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors group">
-                        <div className="flex gap-4 items-start">
-                          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                            <FacebookIcon size={16} className="text-blue-600" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-bold text-slate-800 line-clamp-1">{post.content}</h4>
-                            <div className="flex items-center gap-3 mt-1">
-                              <span className="text-xs font-semibold text-slate-500">{post.page}</span>
-                              <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                              <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
-                                {post.type === "AI Generated" ? <Sparkles size={10} className="text-violet-500" /> : null} 
-                                {post.type}
-                              </span>
+                    {scheduledPosts.length > 0 ? (
+                      scheduledPosts.slice(0, 5).map((post, index) => (
+                        <div key={post.id || index} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors group">
+                          <div className="flex gap-4 items-start">
+                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                              <FacebookIcon size={16} className="text-blue-600" />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-bold text-slate-800 line-clamp-1">
+                                {post.caption || "Post with Media"}
+                              </h4>
+                              <div className="flex items-center gap-3 mt-1">
+                                <span className="text-xs font-semibold text-slate-500">{post.pageName}</span>
+                                <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                                <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                                  Manual Post
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0">
-                          <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-1 ${
-                            post.status === "Scheduled" ? "bg-amber-100 text-amber-700" : "bg-slate-200 text-slate-600"
-                          }`}>
-                            {post.status}
+                          <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0">
+                            <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-1 ${
+                              post.status === "SCHEDULED" ? "bg-amber-100 text-amber-700" : "bg-slate-200 text-slate-600"
+                            }`}>
+                              {post.status}
+                            </div>
+                            <span className="text-xs font-bold text-slate-500">{post.date}, {post.time}</span>
                           </div>
-                          <span className="text-xs font-bold text-slate-500">{post.time}</span>
                         </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                        <div className="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <CalendarDays size={20} className="text-slate-400" />
+                        </div>
+                        <p className="text-slate-600 text-sm font-bold mb-2">No scheduled posts yet</p>
+                        <p className="text-slate-400 text-xs font-medium mb-4 max-w-[250px] mx-auto">Get started by creating your first automated post.</p>
+                        <Link href="/social-studio/create" className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-100 transition-colors shadow-sm">
+                          <Plus size={14} /> Create New Post
+                        </Link>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               </div>
@@ -226,14 +262,14 @@ export default function SocialStudioDashboard() {
                     <Zap size={18} className="text-amber-500" /> Quick Actions
                   </h2>
                   <div className="grid grid-cols-2 gap-3">
-                    <button className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-violet-50 hover:bg-violet-100 text-violet-700 transition-colors group">
+                    <Link href="/social-studio/create" className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-violet-50 hover:bg-violet-100 text-violet-700 transition-colors group">
                       <Sparkles size={20} className="group-hover:scale-110 transition-transform" />
                       <span className="text-xs font-bold text-center">AI Post<br/>Generator</span>
-                    </button>
+                    </Link>
                     <Link href="/social-studio/accounts" className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors group">
-  <FacebookIcon size={20} className="group-hover:scale-110 transition-transform" />
-  <span className="text-xs font-bold text-center">Connect<br/>Page</span>
-</Link>
+                      <FacebookIcon size={20} className="group-hover:scale-110 transition-transform" />
+                      <span className="text-xs font-bold text-center">Connect<br/>Page</span>
+                    </Link>
                     <button className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors group">
                       <CalendarDays size={20} className="group-hover:scale-110 transition-transform" />
                       <span className="text-xs font-bold text-center">Bulk<br/>Schedule</span>
