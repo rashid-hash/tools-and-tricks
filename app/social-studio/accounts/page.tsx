@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import Link from "next/link";
 import { 
@@ -23,26 +23,65 @@ export default function ConnectedAccountsPage() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Mock Connected Pages Data
-  const [connectedPages, setConnectedPages] = useState([
-    { id: "10493829103", name: "Digital Agro BD", image: "D", status: "Connected", lastSync: "10 mins ago", role: "Admin" },
-    { id: "20394857291", name: "MockupHub Official", image: "M", status: "Token Expired", lastSync: "2 days ago", role: "Editor" },
-  ]);
+  // ডামি ডেটা মুছে স্টেট একদম ফাঁকা করে দিলাম
+  const [connectedPages, setConnectedPages] = useState<any[]>([]);
 
-  // Simulate OAuth Connection Flow
+  useEffect(() => {
+    // localStorage থেকে সেভ করা পেজগুলো লোড করছি
+    const savedPages = localStorage.getItem('social_studio_connected_pages');
+    if (savedPages) {
+      try {
+        const parsedPages = JSON.parse(savedPages);
+        // ডামি পেজগুলো ফিল্টার করে চিরতরে বাদ দিয়ে দিচ্ছি
+        const realPages = parsedPages.filter((p: any) => p.name !== "Digital Agro BD" && p.name !== "MockupHub Official");
+        
+        setConnectedPages(realPages);
+        // ফিল্টার করা আসল ডেটা আবার localStorage এ সেভ করছি
+        localStorage.setItem('social_studio_connected_pages', JSON.stringify(realPages));
+      } catch (e) {
+        console.error("Failed to parse saved pages", e);
+      }
+    }
+
+    // URL থেকে ফেসবুকের নতুন পেজ রিসিভ করা
+    const params = new URLSearchParams(window.location.search);
+    const success = params.get('success');
+    const pageName = params.get('pageName');
+    const noPages = params.get('no_pages');
+
+    if (success === 'true' && pageName) {
+      setConnectedPages(prev => {
+        const exists = prev.some(p => p.name === pageName);
+        if (exists) return prev;
+
+        const updatedPages = [
+          { 
+            id: Date.now().toString(), 
+            name: pageName, 
+            image: pageName.charAt(0).toUpperCase(), 
+            status: "Connected", 
+            lastSync: "Just now", 
+            role: "Admin" 
+          },
+          ...prev
+        ];
+
+        localStorage.setItem('social_studio_connected_pages', JSON.stringify(updatedPages));
+        return updatedPages;
+      });
+      
+      window.history.replaceState(null, '', '/social-studio/accounts');
+    } else if (noPages === 'true') {
+      alert("লগইন সফল হয়েছে, কিন্তু আপনার ফেসবুক অ্যাকাউন্টে কোনো বিজনেস পেজ পাওয়া যায়নি!");
+      window.history.replaceState(null, '', '/social-studio/accounts');
+    }
+  }, []);
+
+  // Real OAuth Connection Flow
   const handleFacebookConnect = () => {
     setIsConnecting(true);
-    // বাস্তবে এখানে window.location.href = `https://www.facebook.com/v18.0/dialog/oauth?...` হবে
-    setTimeout(() => {
-      setIsConnecting(false);
-      setIsConnectModalOpen(false);
-      
-      // Simulate adding a new page after successful OAuth callback
-      setConnectedPages([
-        { id: "39485729102", name: "New Business Page", image: "N", status: "Connected", lastSync: "Just now", role: "Admin" },
-        ...connectedPages
-      ]);
-    }, 2000);
+    // এটি ইউজারকে সরাসরি আমাদের ব্যাকএন্ড API তে পাঠাবে, যেখান থেকে ফেসবুক লগইন ওপেন হবে
+    window.location.href = '/api/facebook/login';
   };
 
   return (
@@ -89,7 +128,7 @@ export default function ConnectedAccountsPage() {
         {/* Accounts Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {/* Add New Account Card (Empty State Trigger) */}
+          {/* Add New Account Card */}
           <button 
             onClick={() => setIsConnectModalOpen(true)}
             className="h-[220px] rounded-[24px] border-2 border-dashed border-slate-200 hover:border-violet-400 bg-slate-50/50 hover:bg-violet-50/50 flex flex-col items-center justify-center gap-3 transition-all group"
@@ -104,7 +143,6 @@ export default function ConnectedAccountsPage() {
           {connectedPages.map((page) => (
             <div key={page.id} className="h-[220px] bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 flex flex-col justify-between group hover:shadow-xl hover:border-slate-200 transition-all relative overflow-hidden">
               
-              {/* Platform Banner/Accent */}
               <div className="absolute top-0 left-0 w-full h-1 bg-[#1877F2]"></div>
 
               <div className="flex justify-between items-start">
@@ -161,16 +199,13 @@ export default function ConnectedAccountsPage() {
       {isConnectModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           
-          {/* Backdrop */}
           <div 
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
             onClick={() => !isConnecting && setIsConnectModalOpen(false)}
           ></div>
 
-          {/* Modal Content */}
           <div className="relative w-full max-w-md bg-white rounded-[32px] shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
             
-            {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
               <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
                 <ShieldCheck size={18} className="text-emerald-500" /> Secure Connection
@@ -184,7 +219,6 @@ export default function ConnectedAccountsPage() {
               </button>
             </div>
 
-            {/* Modal Body */}
             <div className="p-8 text-center">
               <div className="flex justify-center items-center gap-4 mb-6">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">

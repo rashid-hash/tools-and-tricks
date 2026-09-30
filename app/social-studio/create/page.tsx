@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import Link from "next/link";
 import { 
@@ -20,7 +20,9 @@ const FacebookIcon = ({ size = 24, className = "" }) => (
 );
 
 export default function CreatePostPage() {
-  const [selectedPage, setSelectedPage] = useState("Digital Agro BD");
+  // ডামি পেজ সরিয়ে ফাঁকা স্টেট তৈরি
+  const [availablePages, setAvailablePages] = useState<{name: string, id: string, image?: string}[]>([]);
+  const [selectedPage, setSelectedPage] = useState("");
   const [caption, setCaption] = useState("");
   const [scheduleDate, setScheduleDate] = useState("");
   const [scheduleTime, setScheduleTime] = useState("");
@@ -33,6 +35,31 @@ export default function CreatePostPage() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Client-side এ localStorage থেকে আসল পেজগুলো লোড করা
+  useEffect(() => {
+    const savedPages = localStorage.getItem('social_studio_connected_pages');
+    if (savedPages) {
+      try {
+        const parsedPages = JSON.parse(savedPages);
+        // এখানেও ডামি পেজগুলো বাদ দিচ্ছি
+        const realPages = parsedPages.filter((p: any) => p.name !== "Digital Agro BD" && p.name !== "MockupHub Official");
+        
+        if (realPages && realPages.length > 0) {
+          setAvailablePages(realPages);
+          setSelectedPage(realPages[0].name); // প্রথম আসল পেজটি বাই-ডিফল্ট সিলেক্ট করে রাখা
+        }
+      } catch (error) {
+        console.error("Failed to load pages for composer", error);
+      }
+    }
+  }, []);
+
+  // নির্বাচিত পেজের আইকন/ছবি বের করার ফাংশন
+  const getSelectedPageImage = () => {
+    const page = availablePages.find(p => p.name === selectedPage);
+    return page?.image || selectedPage.charAt(0).toUpperCase();
+  };
 
   const handleGenerateAI = async () => {
     if (!aiTopic.trim()) return;
@@ -124,8 +151,11 @@ export default function CreatePostPage() {
                     onChange={(e) => setSelectedPage(e.target.value)}
                     className="w-full h-14 bg-slate-50 border border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 rounded-xl pl-12 pr-10 text-sm font-bold text-slate-800 outline-none appearance-none cursor-pointer transition-all"
                   >
-                    <option value="Digital Agro BD">Digital Agro BD</option>
-                    <option value="MockupHub Official">MockupHub Official</option>
+                    {availablePages.map((page, index) => (
+                      <option key={page.id || index} value={page.name}>
+                        {page.name}
+                      </option>
+                    ))}
                   </select>
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-[#1877F2]/10 rounded-full flex items-center justify-center">
                     <FacebookIcon size={14} className="text-[#1877F2]" />
@@ -224,7 +254,7 @@ export default function CreatePostPage() {
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-500 shrink-0">
-                      {selectedPage.charAt(0)}
+                      {getSelectedPageImage()}
                     </div>
                     <div>
                       <h4 className="text-[15px] font-bold text-[#050505] leading-tight">{selectedPage}</h4>
