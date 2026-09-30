@@ -3,10 +3,18 @@
 import React, { useState } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   Mail, Lock, Eye, EyeOff, Sparkles, 
   ArrowRight 
 } from "lucide-react";
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signInWithPopup,
+  updateProfile
+} from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebase";
 
 const notoSansBengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700"] });
 
@@ -28,24 +36,53 @@ const GithubIcon = ({ size = 18, className = "" }) => (
 );
 
 export default function LoginPage() {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Form States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Email & Password Auth
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API Call for UI
-    setTimeout(() => {
+    setErrorMsg("");
+
+    try {
+      if (isLogin) {
+        // Sign In
+        await signInWithEmailAndPassword(auth, email, password);
+        router.push("/social-studio"); // Redirect to Dashboard
+      } else {
+        // Sign Up
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        // Update user profile with name
+        await updateProfile(userCredential.user, { displayName: name });
+        router.push("/social-studio");
+      }
+    } catch (error: any) {
+      console.error(error);
+      setErrorMsg(error.message.replace("Firebase: ", ""));
+    } finally {
       setIsLoading(false);
-      alert(isLogin ? "Login Successful!" : "Account Created Successfully!");
-    }, 1500);
+    }
+  };
+
+  // Google OAuth
+  const handleGoogleLogin = async () => {
+    setErrorMsg("");
+    try {
+      await signInWithPopup(auth, googleProvider);
+      router.push("/social-studio");
+    } catch (error: any) {
+      console.error(error);
+      setErrorMsg(error.message.replace("Firebase: ", ""));
+    }
   };
 
   return (
@@ -57,9 +94,8 @@ export default function LoginPage() {
 
       <div className="w-full max-w-[1000px] bg-white rounded-[32px] shadow-2xl border border-slate-100 flex overflow-hidden relative z-10 min-h-[600px]">
         
-        {/* Left Side: Branding & Info (Hidden on Mobile) */}
+        {/* Left Side: Branding */}
         <div className="hidden lg:flex flex-col justify-between w-1/2 bg-gradient-to-br from-violet-600 to-indigo-700 p-12 text-white relative overflow-hidden">
-          {/* Glass Overlay */}
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           
@@ -94,7 +130,6 @@ export default function LoginPage() {
         {/* Right Side: Auth Form */}
         <div className="w-full lg:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white relative">
           
-          {/* Mobile Logo */}
           <Link href="/" className="flex lg:hidden items-center gap-2 mb-8 inline-flex">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <Sparkles size={16} className="text-white" />
@@ -110,12 +145,27 @@ export default function LoginPage() {
               {isLogin ? "Enter your details to access your dashboard." : "Start your 14-day free trial. No credit card required."}
             </p>
 
+            {/* Error Message Display */}
+            {errorMsg && (
+              <div className="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 text-sm font-semibold">
+                {errorMsg}
+              </div>
+            )}
+
             {/* Social Logins */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <button className="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-700 transition-all">
+              <button 
+                type="button"
+                onClick={handleGoogleLogin}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-700 transition-all"
+              >
                 <GoogleIcon size={18} /> Google
               </button>
-              <button className="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-700 transition-all">
+              <button 
+                type="button"
+                className="flex items-center justify-center gap-2 px-4 py-2.5 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl text-sm font-bold text-slate-700 transition-all opacity-60 cursor-not-allowed"
+                title="GitHub Login Coming Soon"
+              >
                 <GithubIcon size={18} className="text-slate-900" /> GitHub
               </button>
             </div>
@@ -175,6 +225,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     className="w-full pl-11 pr-12 py-3 bg-slate-50 border border-slate-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 rounded-xl text-sm font-medium outline-none transition-all"
                     required
+                    minLength={6}
                   />
                   <button 
                     type="button"
@@ -204,7 +255,11 @@ export default function LoginPage() {
             <p className="text-center text-sm font-medium text-slate-600 mt-8">
               {isLogin ? "Don't have an account?" : "Already have an account?"}
               <button 
-                onClick={() => setIsLogin(!isLogin)}
+                type="button"
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setErrorMsg("");
+                }}
                 className="ml-1.5 font-bold text-violet-600 hover:text-violet-700"
               >
                 {isLogin ? "Sign up" : "Log in"}
