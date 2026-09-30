@@ -6,7 +6,7 @@ import Link from "next/link";
 import { 
   ArrowLeft, ChevronLeft, ChevronRight, Plus, 
   Calendar as CalendarIcon, Clock, Image as ImageIcon,
-  Sparkles, CheckCircle2, MoreHorizontal
+  Sparkles, CheckCircle2, MoreHorizontal, Trash2
 } from "lucide-react";
 
 const notoSansBengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700"] });
@@ -34,6 +34,19 @@ export default function ContentCalendarPage() {
       }
     }
   }, []);
+
+  // Delete Post Function
+  const handleDeletePost = (postId: string) => {
+    const isConfirm = window.confirm("Are you sure you want to delete this scheduled post?");
+    if (isConfirm) {
+      setScheduledPosts(prev => {
+        const updatedPosts = prev.filter(post => post.id !== postId);
+        // Update LocalStorage
+        localStorage.setItem('social_studio_scheduled_posts', JSON.stringify(updatedPosts));
+        return updatedPosts;
+      });
+    }
+  };
 
   // Calendar Helper Functions
   const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
@@ -193,7 +206,7 @@ export default function ContentCalendarPage() {
               <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4">
                 {selectedDayPosts.length > 0 ? (
                   selectedDayPosts.map((post, idx) => (
-                    <div key={post.id || idx} className="bg-white/10 rounded-2xl p-5 border border-white/5 hover:bg-white/15 transition-colors">
+                    <div key={post.id || idx} className="bg-white/10 rounded-2xl p-5 border border-white/5 hover:bg-white/15 transition-colors group">
                       <div className="flex items-center justify-between mb-3">
                         <div className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${
                           post.status === "SCHEDULED" ? "bg-amber-500/20 text-amber-300" : "bg-emerald-500/20 text-emerald-300"
@@ -216,9 +229,13 @@ export default function ContentCalendarPage() {
                           </div>
                           <span className="text-xs font-bold text-slate-300">{post.pageName}</span>
                         </div>
-                        <button className="text-slate-400 hover:text-white transition-colors p-1">
-                          <MoreHorizontal size={16} />
-                        </button>
+                        
+                        {/* Action Buttons: Edit/Delete */}
+                        <div className="flex items-center gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => handleDeletePost(post.id)} className="text-slate-400 hover:text-rose-400 transition-colors p-1.5 rounded-lg hover:bg-white/10" title="Delete Post">
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))
