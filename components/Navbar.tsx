@@ -219,9 +219,9 @@ export default function Navbar() {
 
         {/* Action Button */}
         <div className="hidden md:flex items-center gap-4">
-          <Link href="/get-started" className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all">
-            Get Started
-          </Link>
+          <Link href="/login" className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold rounded-xl transition-all">
+  Get Started
+</Link>
         </div>
 
         {/* Mobile Menu Toggle */}

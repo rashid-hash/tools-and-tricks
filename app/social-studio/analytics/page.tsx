@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import Link from "next/link";
 import { 
@@ -21,6 +21,25 @@ const FacebookIcon = ({ size = 16, className = "" }) => (
 
 export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState("Last 30 Days");
+  const [isChartLoaded, setIsChartLoaded] = useState(false);
+  const [connectedPagesCount, setConnectedPagesCount] = useState(0);
+
+  // Trigger chart animation and load data on mount
+  useEffect(() => {
+    // Small delay to allow CSS transitions to trigger
+    setTimeout(() => setIsChartLoaded(true), 100);
+
+    // Load connected pages count
+    const savedPages = localStorage.getItem('social_studio_connected_pages');
+    if (savedPages) {
+      try {
+        const parsedPages = JSON.parse(savedPages);
+        setConnectedPagesCount(parsedPages.length);
+      } catch (error) {
+        console.error("Failed to load connected pages", error);
+      }
+    }
+  }, []);
 
   // Mock KPI Data
   const kpis = [
@@ -61,7 +80,7 @@ export default function AnalyticsPage() {
                 Analytics & Insights
               </h1>
               <p className="text-slate-500 text-sm font-medium mt-1">
-                Measure your social media performance and AI-driven insights.
+                Measuring performance across your {connectedPagesCount > 0 ? <strong className="text-slate-700">{connectedPagesCount} connected pages</strong> : 'connected pages'}.
               </p>
             </div>
           </div>
@@ -147,7 +166,7 @@ export default function AnalyticsPage() {
             <div className="flex justify-between items-center mb-8">
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Reach Overview</h2>
-                <p className="text-sm font-medium text-slate-500 mt-1">Daily reach performance across all connected pages</p>
+                <p className="text-sm font-medium text-slate-500 mt-1">Daily reach performance based on {dateRange.toLowerCase()}</p>
               </div>
               <div className="flex gap-2">
                 <span className="flex items-center gap-2 text-xs font-bold text-slate-500"><span className="w-3 h-3 rounded-full bg-blue-500"></span> Organic</span>
@@ -158,13 +177,13 @@ export default function AnalyticsPage() {
               {chartData.map((data, index) => (
                 <div key={index} className="flex flex-col items-center gap-3 w-full group">
                   <div className="w-full relative flex justify-center bg-blue-50 rounded-t-lg h-[200px]">
-                    {/* The Bar */}
+                    {/* The Bar with Animation */}
                     <div 
-                      className="absolute bottom-0 w-full md:w-3/4 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-md group-hover:from-blue-500 group-hover:to-blue-300 transition-colors"
-                      style={{ height: `${data.value}%` }}
+                      className="absolute bottom-0 w-full md:w-3/4 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-md group-hover:from-blue-500 group-hover:to-blue-300 transition-all duration-1000 ease-out"
+                      style={{ height: isChartLoaded ? `${data.value}%` : '0%' }}
                     ></div>
                     {/* Tooltip on Hover */}
-                    <div className="opacity-0 group-hover:opacity-100 absolute -top-10 bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded shadow-lg transition-opacity whitespace-nowrap z-10">
+                    <div className="opacity-0 group-hover:opacity-100 absolute -top-10 bg-slate-800 text-white text-xs font-bold px-2 py-1 rounded shadow-lg transition-opacity whitespace-nowrap z-10 pointer-events-none">
                       {data.value}K Reach
                     </div>
                   </div>
