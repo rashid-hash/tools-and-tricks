@@ -70,19 +70,21 @@ export default function AgeCalculator() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#f8fafc] p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
+    // 🌟 Added pt-24 md:pt-32 and flex-col 🌟
+    <div className={`min-h-screen pt-24 md:pt-32 bg-[#f8fafc] p-4 md:p-8 flex flex-col gap-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
       
-      {/* Header */}
-      <div className="max-w-5xl mx-auto text-center mb-10 mt-6">
+      {/* 🌟 Top Title Section 🌟 */}
+      <div className="max-w-5xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
           Smart <span className="text-indigo-600">Age Calculator</span>
         </h1>
         <p className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">
-          চাকরির সার্কুলার বা যেকোনো নির্দিষ্ট তারিখ অনুযায়ী আপনার সঠিক বয়স (বছর, মাস ও দিন) বের করুন এক নিমিষেই।
+          চাকরির সার্কুলার বা যেকোনো নির্দিষ্ট তারিখ অনুযায়ী আপনার সঠিক বয়স (বছর, মাস ও দিন) বের করুন এক নিমিষেই।
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-8">
+      {/* 🌟 2-Column Layout 🌟 */}
+      <div className="max-w-5xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
         
         {/* --- Left Panel: Controls --- */}
         <div className="w-full lg:w-[45%] flex flex-col gap-6">
@@ -133,7 +135,8 @@ export default function AgeCalculator() {
         </div>
 
         {/* --- Right Panel: Results --- */}
-        <div className="w-full lg:w-[55%] flex flex-col gap-6">
+        {/* 🌟 Added sticky top-28 🌟 */}
+        <div className="w-full lg:w-[55%] flex flex-col gap-6 sticky top-28">
           <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 flex-1 flex flex-col justify-center min-h-[350px]">
             
             {!age ? (

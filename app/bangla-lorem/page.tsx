@@ -74,7 +74,7 @@ export default function BanglaLoremIpsum() {
     }, 300); // 300ms ডিলিট স্মুথ ট্রানজিশনের জন্য
   };
 
-  // প্রথমবার লোড হওয়ার সময় জেনারেট করা
+  // প্রথমবার লোড হওয়ার সময় জেনারেট করা
   useEffect(() => {
     generateText();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,19 +90,20 @@ export default function BanglaLoremIpsum() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-50 p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
+    // 🌟 Added pt-24 md:pt-32, flex-col and standardized background 🌟
+    <div className={`min-h-screen pt-24 md:pt-32 bg-[#f8fafc] p-4 md:p-8 flex flex-col gap-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
       
-      {/* Header */}
-      <div className="max-w-4xl mx-auto text-center mb-10 mt-6">
+      {/* 🌟 Top Title Section 🌟 */}
+      <div className="max-w-4xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-3">
           Bangla <span className="text-teal-600">Lorem Ipsum</span>
         </h1>
         <p className="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">
-          ওয়েব ডিজাইন বা ডেভেলপমেন্টের ডেমো কাজে ব্যবহারের জন্য সুন্দর ও অর্থবোধক বাংলা ডামি টেক্সট তৈরি করুন।
+          ওয়েব ডিজাইন বা ডেভেলপমেন্টের ডেমো কাজে ব্যবহারের জন্য সুন্দর ও অর্থবোধক বাংলা ডামি টেক্সট তৈরি করুন।
         </p>
       </div>
 
-      <div className="max-w-4xl mx-auto flex flex-col gap-6">
+      <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
         
         {/* --- Controls Box --- */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-4 md:gap-6 relative overflow-hidden z-10">

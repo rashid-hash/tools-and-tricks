@@ -64,7 +64,7 @@ export default function ImageResizer() {
       const ctx = canvas.getContext("2d");
 
       if (ctx) {
-        // সাদা ব্যাকগ্রাউন্ড (যদি PNG ট্রান্সপারেন্ট হয়)
+        // সাদা ব্যাকগ্রাউন্ড (যদি PNG ট্রান্সপারেন্ট হয়)
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, targetWidth, targetHeight);
         ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
@@ -88,10 +88,11 @@ export default function ImageResizer() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#f8fafc] p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
+    // 🌟 Added pt-24 md:pt-32 and flex-col 🌟
+    <div className={`min-h-screen pt-24 md:pt-32 bg-[#f8fafc] p-4 md:p-8 flex flex-col gap-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
       
-      {/* Header */}
-      <div className="max-w-5xl mx-auto text-center mb-10 mt-6">
+      {/* 🌟 Top Title Section 🌟 */}
+      <div className="max-w-5xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
           Premium Job <span className="text-blue-600">Photo Resizer</span>
         </h1>
@@ -100,7 +101,8 @@ export default function ImageResizer() {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-8">
+      {/* 🌟 2-Column Layout 🌟 */}
+      <div className="max-w-5xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
         
         {/* --- Left Panel: Upload & Settings --- */}
         <div className="w-full lg:w-[45%] flex flex-col gap-6">
@@ -170,14 +172,15 @@ export default function ImageResizer() {
         </div>
 
         {/* --- Right Panel: Live Preview & Result --- */}
-        <div className="w-full lg:w-[55%] flex flex-col gap-6">
+        {/* 🌟 Added sticky top-28 🌟 */}
+        <div className="w-full lg:w-[55%] flex flex-col gap-6 sticky top-28">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col">
             <h3 className="font-bold text-xl text-gray-800 mb-6 flex items-center gap-2">
                <ImageIcon className="text-blue-500" /> Result Preview
             </h3>
 
             {!selectedImage && !resizedImage ? (
-              <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50 text-gray-400">
+              <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50 text-gray-400 min-h-[300px]">
                 <ImageIcon size={48} className="mb-3 opacity-50" />
                 <p>Upload an image to see preview</p>
               </div>

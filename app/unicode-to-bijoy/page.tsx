@@ -17,24 +17,21 @@ export default function UnicodeToBijoyConverter() {
     
     let str = text;
     // Basic Re-arrangements for Pre-Kars (ি, ে, ৈ)
-    // This is a simplified reliable mapping for standard Bangla characters
     const mapping: { [key: string]: string } = {
       "অ": "A", "আ": "Av", "ই": "B", "ঈ": "C", "উ": "D", "ঊ": "E", "ঋ": "F", "এ": "G", "ঐ": "H", "ও": "I", "ঔ": "J",
       "ক": "K", "খ": "L", "গ": "M", "ঘ": "N", "ঙ": "O", "চ": "P", "ছ": "Q", "জ": "R", "ঝ": "S", "ঞ": "T",
       "ট": "U", "ঠ": "V", "ড": "W", "ঢ": "X", "ণ": "Y", "ত": "Z", "থ": "_", "দ": "`", "ধ": "a", "ন": "b",
       "প": "c", "ফ": "d", "ব": "e", "ভ": "f", "ম": "g", "য": "h", "র": "i", "ল": "j", "শ": "k", "ষ": "l", "স": "m", "হ": "n",
-      "ড়": "o", "ঢ়": "p", "য়": "q", "ৎ": "r", "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4", "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9",
+      "ড়": "o", "ঢ়": "p", "য়": "q", "ৎ": "r", "০": "0", "১": "1", "২": "2", "৩": "3", "৪": "4", "৫": "5", "৬": "6", "৭": "7", "৮": "8", "৯": "9",
       "া": "v", "ি": "w", "ী": "x", "ু": "y", "ূ": "z", "ৃ": "…", "ে": "†", "ৈ": "‡", "ো": "†v", "ৌ": "‡Š",
       "ং": "s", "ঃ": "t", "ঁ": "u", "্": "&", "্য": "¨", "্র": "«", "র্": "©"
     };
 
-    // Pre-processing Juktokkhor & Pre-Kars (Complex rules simplified for speed)
     str = str.replace(/ে/g, "†");
     str = str.replace(/ৈ/g, "‡");
     str = str.replace(/ো/g, "†v");
     str = str.replace(/ৌ/g, "‡Š");
     
-    // Replace mapping
     let out = "";
     for (let i = 0; i < str.length; i++) {
       let char = str[i];
@@ -45,14 +42,11 @@ export default function UnicodeToBijoyConverter() {
       }
     }
     
-    // Post-processing for ি (w) and ে (e) which sit before the consonant in Bijoy
-    // Using a regex to swap the position of 'w', '†', '‡' with the preceding consonant
     out = out.replace(/([K-n])(w|†|‡)/g, "$2$1");
 
     return out;
   };
 
-  // Real-time conversion
   useEffect(() => {
     setBijoyText(convertUnicodeToBijoy(unicodeText));
   }, [unicodeText]);
@@ -80,19 +74,21 @@ export default function UnicodeToBijoyConverter() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#0f172a] p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-200 pb-20`}>
+    // 🌟 Added pt-24 md:pt-32 and flex-col 🌟
+    <div className={`min-h-screen pt-24 md:pt-32 bg-[#0f172a] p-4 md:p-8 flex flex-col gap-8 font-sans ${notoSansBengali.className} text-gray-200 pb-20`}>
       
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-10 mt-6 text-center">
+      {/* 🌟 Top Title Section 🌟 */}
+      <div className="max-w-6xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-3">
           Unicode to <span className="text-purple-500">Bijoy</span>
         </h1>
         <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
-          ফেসবুক বা ওয়েবসাইটের লেখাকে এক ক্লিকেই বিজয় (SutonnyMJ) ফন্টে রূপান্তর করুন ডিজাইনের কাজের জন্য।
+          ফেসবুক বা ওয়েবসাইটের লেখাকে এক ক্লিকেই বিজয় (SutonnyMJ) ফন্টে রূপান্তর করুন ডিজাইনের কাজের জন্য।
         </p>
       </div>
 
-      <div className="max-w-6xl mx-auto bg-[#1e293b] rounded-3xl shadow-2xl border border-gray-700/50 overflow-hidden">
+      {/* 🌟 Added w-full to Main Container 🌟 */}
+      <div className="max-w-6xl mx-auto w-full bg-[#1e293b] rounded-3xl shadow-2xl border border-gray-700/50 overflow-hidden">
         
         {/* Toolbar */}
         <div className="bg-[#0f172a]/50 p-4 border-b border-gray-700/50 flex flex-wrap justify-between items-center gap-4">
@@ -110,7 +106,7 @@ export default function UnicodeToBijoyConverter() {
            </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-gray-700/50">
+        <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-gray-700/50 relative">
           
           {/* --- Left Box: Unicode Input --- */}
           <div className="w-full lg:w-1/2 p-6 flex flex-col h-[400px]">
@@ -128,17 +124,17 @@ export default function UnicodeToBijoyConverter() {
           </div>
 
           {/* --- Divider Icon --- */}
-          <div className="hidden lg:flex items-center justify-center absolute left-1/2 top-1/2 transform -translate-x-1/2 translate-y-[20%]">
+          <div className="hidden lg:flex items-center justify-center absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
              <div className="bg-purple-600 text-white p-3 rounded-full shadow-lg shadow-purple-500/20 border-4 border-[#1e293b]">
                <ArrowRightLeft size={24} />
              </div>
           </div>
 
           {/* --- Right Box: Bijoy Output --- */}
-          <div className="w-full lg:w-1/2 p-6 flex flex-col h-[400px] bg-[#1e293b] relative">
+          <div className="w-full lg:w-1/2 p-6 flex flex-col h-[400px] bg-[#1e293b]">
              <div className="flex justify-between items-center mb-4">
                 <label className="font-bold text-purple-400 flex items-center gap-2 text-lg">
-                  বিজয় টেক্সট (Output)
+                  বিজয় টেক্সট (Output)
                 </label>
                 <button 
                   onClick={handleCopy}
@@ -148,7 +144,6 @@ export default function UnicodeToBijoyConverter() {
                 </button>
              </div>
              
-             {/* Note: The font-family should ideally be SutonnyMJ for proper rendering, but standard ascii shows the raw converted string. */}
              <textarea 
                value={bijoyText} 
                readOnly
@@ -161,7 +156,7 @@ export default function UnicodeToBijoyConverter() {
              <div className="mt-4 bg-purple-500/10 border border-purple-500/20 p-3 rounded-lg flex items-start gap-3">
                <div className="mt-0.5 text-purple-400">💡</div>
                <p className="text-sm text-gray-400 leading-snug">
-                 বিজয় টেক্সট দেখতে এখানে কিছুটা ইংরেজি অক্ষরের মতো মনে হতে পারে। কপি করে আপনার <span className="text-gray-200 font-semibold">Illustrator বা MS Word</span>-এ পেস্ট করুন এবং ফন্ট পরিবর্তন করে <span className="text-purple-300 font-semibold">SutonnyMJ</span> সিলেক্ট করুন।
+                 বিজয় টেক্সট দেখতে এখানে কিছুটা ইংরেজি অক্ষরের মতো মনে হতে পারে। কপি করে আপনার <span className="text-gray-200 font-semibold">Illustrator বা MS Word</span>-এ পেস্ট করুন এবং ফন্ট পরিবর্তন করে <span className="text-purple-300 font-semibold">SutonnyMJ</span> সিলেক্ট করুন।
                </p>
              </div>
           </div>
