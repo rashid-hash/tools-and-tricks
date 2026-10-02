@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import * as htmlToImage from "html-to-image";
 import { Noto_Sans_Bengali } from "next/font/google";
 import { Plus, Trash2, Download, FileText, Store, User, ShoppingBag } from "lucide-react";
@@ -26,8 +26,10 @@ export default function InvoiceGenerator() {
   const [customerName, setCustomerName] = useState("কাস্টমারের নাম");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerAddress, setCustomerAddress] = useState("");
-  const [invoiceDate, setInvoiceDate] = useState(new Date().toISOString().split("T")[0]);
-  const [invoiceNo, setInvoiceNo] = useState("INV-" + Math.floor(1000 + Math.random() * 9000));
+  
+  // 🌟 Hydration Mismatch Fix: Initially empty or static values
+  const [invoiceDate, setInvoiceDate] = useState("");
+  const [invoiceNo, setInvoiceNo] = useState("INV-0000");
 
   // Items
   const [items, setItems] = useState<InvoiceItem[]>([
@@ -41,6 +43,12 @@ export default function InvoiceGenerator() {
 
   const previewRef = useRef<HTMLDivElement>(null);
   const themeColor = "#0f172a"; // Premium Slate Dark
+
+  // 🌟 Hydration Mismatch Fix: Generate random values only after mount (Client Side)
+  useEffect(() => {
+    setInvoiceDate(new Date().toISOString().split("T")[0]);
+    setInvoiceNo("INV-" + Math.floor(1000 + Math.random() * 9000));
+  }, []);
 
   // Calculations
   const subTotal = items.reduce((sum, item) => sum + item.qty * item.price, 0);
@@ -71,29 +79,29 @@ export default function InvoiceGenerator() {
         link.click();
       } catch (error) {
         console.error("Screenshot error:", error);
-        alert("ইনভয়েস তৈরি করতে সমস্যা হচ্ছে!");
+        alert("ইনভয়েস তৈরি করতে সমস্যা হচ্ছে!");
       }
     }
   };
 
   return (
-    <div className={`min-h-screen bg-[#f8fafc] p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
+    <div className={`min-h-screen pt-24 md:pt-32 bg-[#f8fafc] p-4 md:p-8 flex flex-col gap-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
       
-      <div className="max-w-6xl mx-auto mb-8 mt-4 text-center">
+      <div className="max-w-6xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
           Instant <span className="text-blue-600">Cash Memo</span> Generator
         </h1>
-        <p className="text-gray-500">এফ-কমার্স এবং ছোট ব্যবসার জন্য প্রফেশনাল ইনভয়েস তৈরি করুন মাত্র কয়েক সেকেন্ডে।</p>
+        <p className="text-gray-500">এফ-কমার্স এবং ছোট ব্যবসার জন্য প্রফেশনাল ইনভয়েস তৈরি করুন মাত্র কয়েক সেকেন্ডে।</p>
       </div>
 
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 items-start">
+      <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
         
         {/* --- Left Panel: Data Entry --- */}
         <div className="w-full lg:w-[50%] flex flex-col gap-6">
           
           {/* Business & Invoice Info */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-gray-800 border-b pb-2"><Store size={18} className="text-blue-500" /> শপ ও ইনভয়েস ইনফো</h3>
+            <h3 className="font-bold text-lg mb-4 flex items-center gap-2 text-gray-800 border-b pb-2"><Store size={18} className="text-blue-500" /> শপ ও ইনভয়েস ইনফো</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input type="text" placeholder="শপের নাম" value={businessName} onChange={(e) => setBusinessName(e.target.value)} className="border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500" />
               <input type="text" placeholder="শপের মোবাইল নাম্বার" value={businessPhone} onChange={(e) => setBusinessPhone(e.target.value)} className="border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500" />
@@ -158,10 +166,10 @@ export default function InvoiceGenerator() {
         </div>
 
         {/* --- Right Panel: Live Preview --- */}
-        <div className="w-full lg:w-[50%] flex justify-center sticky top-20">
+        <div className="w-full lg:w-[50%] flex justify-center sticky top-28">
           
           {/* Invoice Canvas */}
-          <div ref={previewRef} className="w-full max-w-[420px] bg-white relative flex flex-col shadow-2xl overflow-hidden border border-gray-200">
+          <div ref={previewRef} className="w-full max-w-[420px] bg-white relative flex flex-col shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] overflow-hidden border border-gray-200 rounded-2xl">
             
             {/* Header Section */}
             <div className="px-6 py-8 flex flex-col items-center justify-center text-center text-white" style={{ backgroundColor: themeColor }}>

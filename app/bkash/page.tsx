@@ -44,7 +44,7 @@ export default function BkashGenerator() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-50 p-4 md:p-8 flex flex-col lg:flex-row gap-8 ${notoSansBengali.className} text-gray-800`}>
+    <div className={`min-h-screen pt-24 md:pt-32 bg-gray-50 p-4 md:p-8 flex flex-col lg:flex-row gap-8 ${notoSansBengali.className} text-gray-800`}>
       
       {/* --- Left Panel: Controls --- */}
       <div className="w-full lg:w-1/2 bg-white p-6 rounded-xl shadow-md flex flex-col gap-4 font-sans">

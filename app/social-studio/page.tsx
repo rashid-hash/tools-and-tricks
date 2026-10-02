@@ -3,12 +3,17 @@
 import React, { useState, useEffect } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
   LayoutDashboard, PenSquare, CalendarDays, 
   BarChart3, Image as ImageIcon, Settings, 
   Plus, Zap, Clock, CheckCircle2, 
-  Menu, X, Bell, Search, Sparkles, ArrowUpRight
+  Menu, X, Bell, Search, Sparkles, ArrowUpRight, LogOut
 } from "lucide-react";
+
+// Firebase Imports
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const notoSansBengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700"] });
 
@@ -20,15 +25,28 @@ const FacebookIcon = ({ size = 24, className = "" }) => (
 );
 
 export default function SocialStudioDashboard() {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Auth State
+  const [user, setUser] = useState<any>(null);
   
   // Dynamic States for LocalStorage Data
   const [scheduledPosts, setScheduledPosts] = useState<any[]>([]);
   const [connectedPagesCount, setConnectedPagesCount] = useState(0);
 
-  // Load Data from LocalStorage
+  // Authentication Listener & Data Fetching
   useEffect(() => {
-    // Load Scheduled Posts
+    // 1. Listen for Auth State Changes
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser); // User is logged in
+      } else {
+        router.push("/login"); // Redirect to login if not authenticated
+      }
+    });
+
+    // 2. Load Scheduled Posts
     const savedPosts = localStorage.getItem('social_studio_scheduled_posts');
     if (savedPosts) {
       try {
@@ -38,7 +56,7 @@ export default function SocialStudioDashboard() {
       }
     }
 
-    // Load Connected Pages Count
+    // 3. Load Connected Pages Count
     const savedPages = localStorage.getItem('social_studio_connected_pages');
     if (savedPages) {
       try {
@@ -48,7 +66,19 @@ export default function SocialStudioDashboard() {
         console.error("Failed to load connected pages", error);
       }
     }
-  }, []);
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
+
+  // Handle Logout Function
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   // Dynamic Stats Array
   const stats = [
@@ -57,6 +87,15 @@ export default function SocialStudioDashboard() {
     { title: "Published (30d)", value: "28", icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-100", trend: "+12% engagement" },
     { title: "AI Credits", value: "850", icon: Sparkles, color: "text-violet-600", bg: "bg-violet-100", trend: "Refills in 12 days" },
   ];
+
+  // Prevent rendering main dashboard until user auth is verified to avoid flickering
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F4F7F9]">
+        <div className="w-8 h-8 border-4 border-violet-200 border-t-violet-600 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen pt-20 md:pt-24 bg-[#F4F7F9] flex font-sans ${notoSansBengali.className} text-slate-800`}>
@@ -106,17 +145,34 @@ export default function SocialStudioDashboard() {
           </Link>
         </nav>
 
-        {/* User Profile Mini */}
-        <div className="p-4 border-t border-slate-100">
-          <div className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
-            <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-600">
-              U
+        {/* Real User Profile Mini with Logout functionality */}
+        <div className="p-4 border-t border-slate-100 relative group">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors">
+            <div className="w-9 h-9 rounded-full bg-violet-100 border border-violet-200 flex items-center justify-center font-bold text-violet-700 overflow-hidden shrink-0">
+              {user.photoURL ? (
+                <img src={user.photoURL} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                user.displayName?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"
+              )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-slate-900 truncate">Pro User</p>
-              <p className="text-xs text-slate-500 truncate">Pro Plan Active</p>
+              <p className="text-sm font-bold text-slate-900 truncate" title={user.displayName || "Creator"}>
+                {user.displayName || "Creator"}
+              </p>
+              <p className="text-[11px] font-semibold text-slate-500 truncate" title={user.email}>
+                {user.email}
+              </p>
             </div>
           </div>
+
+          {/* Hover Logout Button */}
+          <button 
+            onClick={handleLogout}
+            className="absolute right-6 top-1/2 -translate-y-1/2 p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg opacity-0 group-hover:opacity-100 transition-all shadow-sm z-10"
+            title="Log Out"
+          >
+            <LogOut size={16} />
+          </button>
         </div>
       </aside>
 
@@ -159,7 +215,7 @@ export default function SocialStudioDashboard() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Welcome back, Creator! 👋
+                  Welcome back, {user.displayName?.split(" ")[0] || "Creator"}! 👋
                 </h1>
                 <p className="text-slate-500 text-sm font-medium mt-1">
                   Here is what's happening with your social media today.

@@ -69,16 +69,19 @@ export default function FacebookPostGenerator() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#f0f2f5] p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
+    // এখানে lg:flex-row বাদ দিয়ে flex-col রাখা হয়েছে যাতে টাইটেল উপরে থাকে
+    <div className={`min-h-screen pt-24 md:pt-32 bg-gray-50 p-4 md:p-8 flex flex-col gap-8 ${notoSansBengali.className} text-gray-800`}>
       
-      <div className="max-w-6xl mx-auto mb-8 mt-4 text-center">
+      {/* Top Title Section */}
+      <div className="max-w-6xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
           Fake <span style={{ color: fbBlue }}>Facebook Post</span> Generator
         </h1>
-        <p className="text-gray-500">কনটেন্ট ক্রিয়েটরদের জন্য ১০০% রিয়েলিস্টিক ফেসবুক পোস্ট মকআপ তৈরি করুন।</p>
+        <p className="text-gray-500">কনটেন্ট ক্রিয়েটরদের জন্য ১০০% রিয়েলিস্টিক ফেসবুক পোস্ট মকআপ তৈরি করুন।</p>
       </div>
 
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-start">
+      {/* 2-Column Layout for Controls and Preview */}
+      <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
         
         {/* --- Left Panel: Controls --- */}
         <div className="w-full lg:w-[45%] flex flex-col gap-6">
@@ -89,7 +92,7 @@ export default function FacebookPostGenerator() {
             <div className="flex items-center gap-4 border-b border-gray-100 pb-4">
                <div 
                  onClick={() => fileInputRef.current?.click()}
-                 className="w-16 h-16 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden relative group"
+                 className="w-16 h-16 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden relative group shrink-0"
                >
                  <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
                  {profilePic ? (
@@ -110,7 +113,7 @@ export default function FacebookPostGenerator() {
               <label className="text-sm font-semibold text-gray-600">Profile Name</label>
               <div className="flex items-center gap-2">
                 <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} className="flex-1 border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500" />
-                <label className="flex items-center gap-2 cursor-pointer bg-gray-50 p-2.5 rounded-lg border border-gray-200">
+                <label className="flex items-center gap-2 cursor-pointer bg-gray-50 p-2.5 rounded-lg border border-gray-200 shrink-0">
                   <input type="checkbox" checked={isVerified} onChange={(e) => setIsVerified(e.target.checked)} className="accent-blue-500 w-4 h-4" />
                   <span className="text-sm font-medium">Verified</span>
                 </label>
@@ -163,10 +166,10 @@ export default function FacebookPostGenerator() {
         </div>
 
         {/* --- Right Panel: Live Preview --- */}
-        <div className="w-full lg:w-[55%] flex justify-center sticky top-20">
+        <div className="w-full lg:w-[55%] flex justify-center sticky top-28">
           
           {/* Facebook Post Container */}
-          <div ref={previewRef} className="w-full max-w-[500px] bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden font-sans">
+          <div ref={previewRef} className="w-full max-w-[500px] bg-white rounded-xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] border border-gray-200 overflow-hidden font-sans">
             
             {/* Post Header */}
             <div className="px-4 pt-3 pb-2 flex justify-between items-start">

@@ -21,7 +21,7 @@ export default function NagadGenerator() {
   const nagadOrange = "#ea5420";
 
   // Total amount calculation (as exact number/string)
-  const totalAmount = (parseFloat(amount) + parseFloat(charge)).toFixed(2);
+  const totalAmount = (parseFloat(amount || "0") + parseFloat(charge || "0")).toFixed(2);
 
   const downloadScreenshot = async () => {
     if (previewRef.current) {
@@ -42,94 +42,107 @@ export default function NagadGenerator() {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-50 p-4 md:p-8 flex flex-col lg:flex-row gap-8 ${notoSansBengali.className} text-gray-800`}>
+    // 🌟 Added pt-24 md:pt-32 and flex-col 🌟
+    <div className={`min-h-screen pt-24 md:pt-32 bg-gray-50 p-4 md:p-8 flex flex-col gap-8 ${notoSansBengali.className} text-gray-800`}>
       
-      {/* --- Left Panel: Controls --- */}
-      <div className="w-full lg:w-1/2 bg-white p-6 rounded-xl shadow-md flex flex-col gap-4 font-sans">
-        <h2 className="text-2xl font-bold mb-4" style={{ color: nagadOrange }}>Nagad Image Background Settings</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1 md:col-span-2">
-            <label className="text-sm font-semibold text-gray-600">Receiver Number</label>
-            <input type="text" value={receiverNumber} onChange={(e) => setReceiverNumber(e.target.value)} className="border p-2 rounded outline-none focus:ring-2 focus:ring-[#ea5420]" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-gray-600">TrxID</label>
-            <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="border p-2 rounded outline-none uppercase focus:ring-2 focus:ring-[#ea5420]" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-gray-600">Time & Date</label>
-            <input type="text" value={time} onChange={(e) => setTime(e.target.value)} className="border p-2 rounded outline-none focus:ring-2 focus:ring-[#ea5420]" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-gray-600">Amount (Tk)</label>
-            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="border p-2 rounded outline-none focus:ring-2 focus:ring-[#ea5420]" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-semibold text-gray-600">Charge (Tk)</label>
-            <input type="number" value={charge} onChange={(e) => setCharge(e.target.value)} className="border p-2 rounded outline-none focus:ring-2 focus:ring-[#ea5420]" />
-          </div>
-        </div>
-
-        <button onClick={downloadScreenshot} className="mt-4 text-white py-3 rounded-lg font-bold transition w-full hover:opacity-90 shadow-md" style={{ backgroundColor: nagadOrange }}>
-          Download Screenshot
-        </button>
+      {/* 🌟 Top Title Section 🌟 */}
+      <div className="max-w-6xl mx-auto w-full text-center">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
+          Fake <span style={{ color: nagadOrange }}>Nagad</span> Receipt
+        </h1>
+        <p className="text-gray-500">১০০% রিয়েলিস্টিক নগদ পেমেন্ট মকআপ তৈরি করুন খুব সহজেই।</p>
       </div>
 
-      {/* --- Right Panel: Live Preview --- */}
-      <div className="w-full lg:w-1/2 flex justify-center items-center">
+      {/* 🌟 2-Column Layout 🌟 */}
+      <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
         
-        {/* Main Mockup Container - Standard smartphone ratio */}
-        <div ref={previewRef} className="w-[380px] h-[822px] relative shadow-2xl overflow-hidden bg-white">
-          
-          {/* Background Image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
-            src="/nagad-bg.jpg" 
-            alt="Nagad Blank Template" 
-            className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" 
-          />
-          
-          {/* Text Overlays - Positioned precisely over the background */}
-          <div className="absolute inset-0 z-10 w-full h-full pointer-events-none">
+        {/* --- Left Panel: Controls --- */}
+        <div className="w-full lg:w-[45%] flex flex-col gap-6">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-4 font-sans">
             
-            {/* 1. Receiver Number (Top Center) */}
-            <div className="absolute top-[23%] w-full text-center">
-              <span className="text-[14px] font-medium text-[#4b4b4b]">{receiverNumber}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1 md:col-span-2">
+                <label className="text-sm font-semibold text-gray-600">Receiver Number</label>
+                <input type="text" value={receiverNumber} onChange={(e) => setReceiverNumber(e.target.value)} className="border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-[#ea5420]/30 focus:border-[#ea5420]" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-600">TrxID</label>
+                <input type="text" value={trxId} onChange={(e) => setTrxId(e.target.value)} className="border p-2.5 rounded-lg outline-none uppercase focus:ring-2 focus:ring-[#ea5420]/30 focus:border-[#ea5420]" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-600">Time & Date</label>
+                <input type="text" value={time} onChange={(e) => setTime(e.target.value)} className="border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-[#ea5420]/30 focus:border-[#ea5420]" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-600">Amount (Tk)</label>
+                <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-[#ea5420]/30 focus:border-[#ea5420]" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-semibold text-gray-600">Charge (Tk)</label>
+                <input type="number" value={charge} onChange={(e) => setCharge(e.target.value)} className="border p-2.5 rounded-lg outline-none focus:ring-2 focus:ring-[#ea5420]/30 focus:border-[#ea5420]" />
+              </div>
             </div>
 
-            {/* 2. Details List (Right Aligned) */}
-            {/* The left side labels (TrxID, Amount, etc.) are already in the background image. 
-                We just need to place the dynamic values on the right side. */}
-            <div className="absolute top-[28%] left-[40%] right-[6%] flex flex-col gap-[3px]">
-              
-              {/* TrxID */}
-              <div className="text-right">
-                <span className="text-[14px] font-medium text-[#4b4b4b] uppercase">{trxId}</span>
-              </div>
-              
-              {/* Amount */}
-              <div className="text-right">
-                <span className="text-[14px] font-medium text-[#4b4b4b]">{amount} টাকা</span>
-              </div>
-              
-              {/* Charge */}
-              <div className="text-right">
-                <span className="text-[14px] font-medium text-[#4b4b4b]">{charge} টাকা</span>
-              </div>
-              
-              {/* Total Amount */}
-              <div className="text-right">
-                <span className="text-[14px] font-medium text-[#4b4b4b]">{totalAmount} টাকা</span>
-              </div>
-              
-              {/* Time */}
-              <div className="text-right">
-                <span className="text-[14px] font-medium text-[#4b4b4b]">{time}</span>
-              </div>
-              
-            </div>
+          </div>
+          
+          <button onClick={downloadScreenshot} className="w-full text-white font-bold py-4 rounded-xl shadow-lg hover:opacity-90 transition flex items-center justify-center gap-2 text-lg" style={{ backgroundColor: nagadOrange }}>
+            Download Screenshot
+          </button>
+        </div>
 
+        {/* --- Right Panel: Live Preview --- */}
+        <div className="w-full lg:w-[55%] flex justify-center sticky top-28">
+          
+          {/* Main Mockup Container - Standard smartphone ratio */}
+          <div ref={previewRef} className="w-[380px] h-[822px] relative shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] overflow-hidden bg-white rounded-[2rem] border border-gray-200">
+            
+            {/* Background Image */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src="/nagad-bg.jpg" 
+              alt="Nagad Blank Template" 
+              className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" 
+            />
+            
+            {/* Text Overlays - Positioned precisely over the background */}
+            <div className="absolute inset-0 z-10 w-full h-full pointer-events-none">
+              
+              {/* 1. Receiver Number (Top Center) */}
+              <div className="absolute top-[23%] w-full text-center">
+                <span className="text-[14px] font-medium text-[#4b4b4b]">{receiverNumber}</span>
+              </div>
+
+              {/* 2. Details List (Right Aligned) */}
+              <div className="absolute top-[28%] left-[40%] right-[6%] flex flex-col gap-[3px]">
+                
+                {/* TrxID */}
+                <div className="text-right">
+                  <span className="text-[14px] font-medium text-[#4b4b4b] uppercase">{trxId}</span>
+                </div>
+                
+                {/* Amount */}
+                <div className="text-right">
+                  <span className="text-[14px] font-medium text-[#4b4b4b]">{amount} টাকা</span>
+                </div>
+                
+                {/* Charge */}
+                <div className="text-right">
+                  <span className="text-[14px] font-medium text-[#4b4b4b]">{charge} টাকা</span>
+                </div>
+                
+                {/* Total Amount */}
+                <div className="text-right">
+                  <span className="text-[14px] font-medium text-[#4b4b4b]">{totalAmount} টাকা</span>
+                </div>
+                
+                {/* Time */}
+                <div className="text-right">
+                  <span className="text-[14px] font-medium text-[#4b4b4b]">{time}</span>
+                </div>
+                
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

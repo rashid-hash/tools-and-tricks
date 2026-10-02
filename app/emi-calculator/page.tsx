@@ -61,10 +61,11 @@ export default function EmiCalculator() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#f8fafc] p-4 md:p-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
+    // 🌟 Added pt-24 md:pt-32 and flex-col 🌟
+    <div className={`min-h-screen pt-24 md:pt-32 bg-[#f8fafc] p-4 md:p-8 flex flex-col gap-8 font-sans ${notoSansBengali.className} text-gray-800 pb-20`}>
       
-      {/* Header */}
-      <div className="max-w-5xl mx-auto text-center mb-10 mt-4">
+      {/* 🌟 Top Title Section 🌟 */}
+      <div className="max-w-5xl mx-auto w-full text-center">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
           Smart <span className="text-emerald-600">EMI Calculator</span>
         </h1>
@@ -73,7 +74,8 @@ export default function EmiCalculator() {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-8">
+      {/* 🌟 2-Column Layout 🌟 */}
+      <div className="max-w-5xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
         
         {/* --- Left Panel: Controls --- */}
         <div className="w-full lg:w-[50%] bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col gap-8">
@@ -127,7 +129,7 @@ export default function EmiCalculator() {
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <label className="font-semibold text-gray-700 flex items-center gap-2">
-                <CalendarDays size={18} className="text-emerald-500" /> লোনের মেয়াদ
+                <CalendarDays size={18} className="text-emerald-500" /> লোনের মেয়াদ
               </label>
               <div className="flex bg-gray-100 rounded-lg p-1">
                 <button 
@@ -167,7 +169,7 @@ export default function EmiCalculator() {
         </div>
 
         {/* --- Right Panel: Live Results --- */}
-        <div className="w-full lg:w-[50%] flex flex-col gap-6">
+        <div className="w-full lg:w-[50%] flex flex-col gap-6 sticky top-28">
           <div className="bg-emerald-900 text-white p-8 rounded-3xl shadow-lg relative overflow-hidden flex flex-col justify-between h-full min-h-[400px]">
             
             {/* Background Decorations */}
@@ -221,7 +223,7 @@ export default function EmiCalculator() {
             <div className="relative z-10 mt-6 flex items-start gap-2 bg-black/20 p-3 rounded-xl border border-white/5">
               <Info size={20} className="text-emerald-200 shrink-0 mt-0.5" />
               <p className="text-xs text-emerald-100 leading-relaxed">
-                এই হিসাবটি 'Reducing Balance' পদ্ধতির ওপর ভিত্তি করে করা হয়েছে। ব্যাংক বা আর্থিক প্রতিষ্ঠানের হিডেন চার্জ অনুযায়ী কিস্তির পরিমাণ সামান্য কম-বেশি হতে পারে।
+                এই হিসাবটি 'Reducing Balance' পদ্ধতির ওপর ভিত্তি করে করা হয়েছে। ব্যাংক বা আর্থিক প্রতিষ্ঠানের হিডেন চার্জ অনুযায়ী কিস্তির পরিমাণ সামান্য কম-বেশি হতে পারে।
               </p>
             </div>
 

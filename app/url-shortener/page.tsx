@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import { Noto_Sans_Bengali } from "next/font/google";
 import { 
   Link as LinkIcon, BarChart3, Copy, CheckCircle2, 
-  Trash2, MousePointerClick, Calendar, ArrowRight,
-  TrendingUp, Activity
+  Trash2, Activity, Calendar, ArrowRight, TrendingUp
 } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/lib/firebase";
+import { collection, doc, setDoc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 
 const notoSansBengali = Noto_Sans_Bengali({ subsets: ["bengali"], weight: ["400", "500", "600", "700"] });
 
@@ -18,6 +19,7 @@ interface ShortLink {
   slug: string;
   clicks: number;
   createdAt: string;
+  timestamp: number;
 }
 
 export default function UrlShortenerDashboard() {
@@ -25,48 +27,60 @@ export default function UrlShortenerDashboard() {
   const [customSlug, setCustomSlug] = useState("");
   const [links, setLinks] = useState<ShortLink[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load links from local storage on mount
+  // Real-time fetch links from Firebase Firestore
   useEffect(() => {
-    const savedLinks = localStorage.getItem("shortened_links");
-    if (savedLinks) {
-      setLinks(JSON.parse(savedLinks));
-    }
+    const q = query(collection(db, "shortened_links"), orderBy("timestamp", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const linksData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as ShortLink[];
+      setLinks(linksData);
+    });
+
+    return () => unsubscribe();
   }, []);
-
-  // Save links to local storage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("shortened_links", JSON.stringify(links));
-  }, [links]);
 
   const generateSlug = () => {
     return Math.random().toString(36).substring(2, 8);
   };
 
-  const handleShorten = (e: React.FormEvent) => {
+  const handleShorten = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!longUrl.trim()) return;
+    setIsSubmitting(true);
 
-    let finalUrl = longUrl;
-    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
-      finalUrl = 'https://' + finalUrl;
+    try {
+      let finalUrl = longUrl;
+      if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+        finalUrl = 'https://' + finalUrl;
+      }
+
+      const slug = customSlug.trim() || generateSlug();
+      const shortDomain = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+      
+      const newLink = {
+        originalUrl: finalUrl,
+        slug: slug,
+        shortUrl: `${shortDomain}/s/${slug}`,
+        clicks: 0,
+        createdAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        timestamp: Date.now()
+      };
+
+      // Save to Firestore using slug as Document ID
+      await setDoc(doc(db, "shortened_links", slug), newLink);
+
+      setLongUrl("");
+      setCustomSlug("");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+      alert("Failed to shorten URL. Check database permissions.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    const slug = customSlug.trim() || generateSlug();
-    const shortDomain = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
-    
-    const newLink: ShortLink = {
-      id: Date.now().toString(),
-      originalUrl: finalUrl,
-      slug: slug,
-      shortUrl: `${shortDomain}/s/${slug}`,
-      clicks: Math.floor(Math.random() * 50), // Simulated initial clicks for UI preview
-      createdAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-    };
-
-    setLinks([newLink, ...links]);
-    setLongUrl("");
-    setCustomSlug("");
   };
 
   const handleCopy = (url: string, id: string) => {
@@ -75,23 +89,23 @@ export default function UrlShortenerDashboard() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handleDelete = (id: string) => {
-    setLinks(links.filter(link => link.id !== id));
-  };
-
-  // Simulate a click when user clicks the short link in the dashboard
-  const handleSimulateClick = (id: string) => {
-    setLinks(links.map(link => 
-      link.id === id ? { ...link, clicks: link.clicks + 1 } : link
-    ));
+  const handleDelete = async (slug: string) => {
+    const isConfirm = window.confirm("Are you sure you want to delete this link?");
+    if (isConfirm) {
+      try {
+        await deleteDoc(doc(db, "shortened_links", slug));
+      } catch (error) {
+        console.error("Error deleting document: ", error);
+      }
+    }
   };
 
   const totalClicks = links.reduce((sum, link) => sum + link.clicks, 0);
 
   return (
     <div className={`min-h-screen bg-[#F4F7F9] font-sans ${notoSansBengali.className} pb-20 pt-24 md:pt-28 text-slate-800`}>
-      
       <div className="max-w-7xl mx-auto px-4 md:px-8">
+        
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
           <div>
@@ -102,11 +116,10 @@ export default function UrlShortenerDashboard() {
               Premium <span className="text-blue-600">Link Manager</span>
             </h1>
             <p className="text-slate-500 text-sm font-medium mt-2">
-              ইউআরএল শর্ট করুন, কাস্টম এলিয়েন (Slug) তৈরি করুন এবং রিয়েল-টাইম ক্লিক ট্র্যাক করুন।
+              ইউআরএল শর্ট করুন, কাস্টম এলিয়েন (Slug) তৈরি করুন এবং রিয়েল-টাইম ক্লিক ট্র্যাক করুন।
             </p>
           </div>
 
-          {/* Quick Stats Cards */}
           <div className="flex gap-4 w-full md:w-auto">
             <div className="bg-white px-6 py-4 rounded-2xl shadow-sm border border-slate-200/60 flex-1 md:flex-none">
               <div className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
@@ -165,10 +178,10 @@ export default function UrlShortenerDashboard() {
 
                 <button 
                   type="submit"
-                  disabled={!longUrl.trim()}
+                  disabled={!longUrl.trim() || isSubmitting}
                   className="w-full flex items-center justify-center gap-2 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:shadow-none"
                 >
-                  Shorten URL <ArrowRight size={18} />
+                  {isSubmitting ? "Saving to Cloud..." : <>Shorten URL <ArrowRight size={18} /></>}
                 </button>
               </form>
             </div>
@@ -178,7 +191,7 @@ export default function UrlShortenerDashboard() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <h3 className="font-bold text-slate-800">Your Links</h3>
+                <h3 className="font-bold text-slate-800">Cloud Links</h3>
                 <span className="text-xs font-bold text-slate-500 bg-slate-200/50 px-3 py-1 rounded-full">
                   {links.length} Active
                 </span>
@@ -213,10 +226,9 @@ export default function UrlShortenerDashboard() {
                           <td className="px-6 py-4">
                             <div className="flex flex-col">
                               <a 
-                                href={link.originalUrl} 
+                                href={link.shortUrl} 
                                 target="_blank" 
                                 rel="noreferrer"
-                                onClick={() => handleSimulateClick(link.id)}
                                 className="text-sm font-bold text-blue-600 hover:text-blue-700 mb-1 flex items-center gap-1.5"
                               >
                                 {link.slug}
@@ -252,7 +264,7 @@ export default function UrlShortenerDashboard() {
                                 {copiedId === link.id ? <CheckCircle2 size={18} className="text-emerald-500" /> : <Copy size={18} />}
                               </button>
                               <button 
-                                onClick={() => handleDelete(link.id)}
+                                onClick={() => handleDelete(link.slug)}
                                 className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                 title="Delete Link"
                               >

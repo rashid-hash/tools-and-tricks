@@ -63,20 +63,26 @@ export default function MessengerGenerator() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#f0f2f5] p-4 md:p-8 font-sans ${notoSansBengali.className} pb-20`}>
-      <div className="max-w-6xl mx-auto mb-8 mt-4 text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">Fake <span style={{ color: msgrBlue }}>Messenger</span> Chat</h1>
+    <div className={`min-h-screen pt-24 md:pt-32 bg-gray-50 p-4 md:p-8 flex flex-col gap-8 ${notoSansBengali.className} text-gray-800`}>
+      
+      {/* 🌟 Added w-full here 🌟 */}
+      <div className="max-w-6xl mx-auto w-full mb-2 text-center">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
+          Fake <span style={{ color: msgrBlue }}>Messenger</span> Chat
+        </h1>
         <p className="text-gray-500">Create ultra-realistic Messenger chat screenshots for your content.</p>
       </div>
 
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8 items-start">
+      {/* 🌟 Added w-full here 🌟 */}
+      <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 items-start">
+        
         {/* Controls */}
         <div className="w-full lg:w-[45%] flex flex-col gap-6">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-4">
             
             {/* Profile Setup */}
             <div className="flex items-center gap-4 border-b border-gray-100 pb-4">
-               <div onClick={() => fileInputRef.current?.click()} className="w-14 h-14 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden">
+               <div onClick={() => fileInputRef.current?.click()} className="w-14 h-14 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden shrink-0">
                  <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageUpload} className="hidden" />
                  {profilePic ? <img src={profilePic} alt="Profile" className="w-full h-full object-cover" /> : <UploadCloud size={20} className="text-gray-400" />}
                </div>
@@ -110,19 +116,19 @@ export default function MessengerGenerator() {
           <button onClick={downloadScreenshot} className="w-full text-white font-bold py-4 rounded-xl shadow-lg hover:opacity-90 transition flex items-center justify-center gap-2 text-lg" style={{ backgroundColor: msgrBlue }}><Download size={20} /> Download Mockup</button>
         </div>
 
-        {/* Live Preview */}
-        <div className="w-full lg:w-[55%] flex justify-center sticky top-20">
-          <div ref={previewRef} className="w-[380px] h-[822px] bg-white relative shadow-2xl overflow-hidden flex flex-col font-sans border border-gray-200">
+        {/* Live Preview (🌟 Changed top-20 to top-28 🌟) */}
+        <div className="w-full lg:w-[55%] flex justify-center sticky top-28">
+          <div ref={previewRef} className="w-[380px] h-[822px] bg-white relative shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] overflow-hidden flex flex-col font-sans border border-gray-200 rounded-[2rem]">
             
             {/* Top Status Bar (Placeholder) */}
-            <div className="w-full flex justify-end px-4 py-1.5 bg-white text-[11px] text-gray-500 font-medium">12:30 PM</div>
+            <div className="w-full flex justify-end px-4 py-1.5 bg-white text-[11px] text-gray-500 font-medium rounded-t-[2rem]">12:30 PM</div>
 
             {/* Header */}
             <div className="px-3 py-2 flex justify-between items-center border-b border-gray-200 shadow-sm bg-white z-10">
               <div className="flex items-center gap-3">
                 <ArrowLeft size={24} className="text-[#0084ff] cursor-pointer" />
                 <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden relative">
+                  <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden relative shrink-0">
                     {profilePic ? <img src={profilePic} alt="Profile" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-[#e4e6eb]"></div>}
                     <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
                   </div>
@@ -169,7 +175,7 @@ export default function MessengerGenerator() {
             </div>
 
             {/* Bottom Input Area */}
-            <div className="px-3 py-3 bg-white border-t border-gray-100 flex items-center gap-3">
+            <div className="px-3 py-3 bg-white border-t border-gray-100 flex items-center gap-3 rounded-b-[2rem]">
                <div className="flex items-center gap-3 text-[#0084ff]">
                  <PlusCircle size={22} />
                  <Camera size={22} />

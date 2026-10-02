@@ -81,7 +81,14 @@ export default function LoginPage() {
       router.push("/social-studio");
     } catch (error: any) {
       console.error(error);
-      setErrorMsg(error.message.replace("Firebase: ", ""));
+      
+      // ইউজার পপআপ কেটে দিলে যেন কোনো এরর মেসেজ না দেখায় তার জন্য কন্ডিশন
+      if (
+        error.code !== "auth/cancelled-popup-request" && 
+        error.code !== "auth/popup-closed-by-user"
+      ) {
+        setErrorMsg(error.message.replace("Firebase: ", ""));
+      }
     }
   };
 
